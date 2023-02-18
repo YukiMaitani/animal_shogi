@@ -42,6 +42,7 @@ dependencies:
   adaptive_dialog: ^1.8.2
   auto_route:
   analyzer: ^5.5.0
+  flutter_svg: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -57,12 +58,19 @@ dev_dependencies:
   freezed: ^2.3.2
   json_serializable: ^6.6.1
   auto_route_generator:
+  flutter_gen_runner: ^5.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+flutter_gen:
+  integrations:
+    flutter_svg: true
 flutter:
+  assets:
+    - asset/images/
+    - asset/images/draw/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
