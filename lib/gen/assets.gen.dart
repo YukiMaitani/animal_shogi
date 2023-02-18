@@ -29,8 +29,14 @@ class $AssetImagesDrawGen {
   /// File path: asset/images/draw/palette.svg
   SvgGenImage get palette => const SvgGenImage('asset/images/draw/palette.svg');
 
+  /// File path: asset/images/draw/back.svg
+  SvgGenImage get back => const SvgGenImage('asset/images/draw/back.svg');
+
+  /// File path: asset/images/draw/forward.svg
+  SvgGenImage get forward => const SvgGenImage('asset/images/draw/forward.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [brush, eraser, palette];
+  List<SvgGenImage> get values => [brush, eraser, palette, back, forward];
 }
 
 class Assets {

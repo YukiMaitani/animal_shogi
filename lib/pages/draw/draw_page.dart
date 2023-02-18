@@ -40,11 +40,34 @@ class DrawPage extends HookConsumerWidget {
             _buildPen(),
             _buildEraser(),
             _buildText(),
-            _buildColorPicker()
+            _buildColorPicker(),
+            _buildBackForward(),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildBackForward() {
+    return HookConsumer(builder: (context, ref, child) {
+      return Row(
+        children: [
+          GestureDetector(
+            onTap: () {},
+            child: Assets.images.draw.back.svg(
+              height: 24,
+            ),
+          ),
+          const SizedBox(width: 12,),
+          GestureDetector(
+            onTap: () {},
+            child: Assets.images.draw.forward.svg(
+              height: 24,
+            ),
+          ),
+        ],
+      );
+    });
   }
 
   Widget _buildPen() {
