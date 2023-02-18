@@ -12,6 +12,21 @@ class DrawingController extends ChangeNotifier {
 
   DrawMode get drawMode => _drawMode;
 
+  final List<Offset?> _offsets = [];
+
+  List<Offset?> get offsets => _offsets;
+
+  double _strokeWidth = 10;
+
+  double get strokeWidth => _strokeWidth;
+
+  Paint get paint => Paint()
+    ..color = _color
+    ..strokeWidth = _strokeWidth
+    ..style = PaintingStyle.stroke
+    ..strokeCap = StrokeCap.round
+    ..strokeJoin = StrokeJoin.round;
+
   void setColor(Color color) {
     _color = color;
     notifyListeners();
@@ -19,6 +34,16 @@ class DrawingController extends ChangeNotifier {
 
   void setDrawMode(DrawMode drawMode) {
     _drawMode = drawMode;
+    notifyListeners();
+  }
+
+  void addOffsets(Offset? offset) {
+    _offsets.add(offset);
+    notifyListeners();
+  }
+
+  void setStrokeWidth(double strokeWidth) {
+    _strokeWidth = strokeWidth;
     notifyListeners();
   }
 }

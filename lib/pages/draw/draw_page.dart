@@ -1,4 +1,5 @@
 import 'package:animal_shogi/foundation/colors.dart';
+import 'package:animal_shogi/pages/draw/animal_custom_painter.dart';
 import 'package:animal_shogi/pages/draw/drawing_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -18,14 +19,23 @@ class DrawPage extends HookConsumerWidget {
   Widget _buildBody() {
     return Column(
       children: [
-        Expanded(child: _buildDrawing()),
+        Expanded(child: _buildCanvas()),
         _buildPalette(),
       ],
     );
   }
 
-  Widget _buildDrawing() {
-    return Container();
+  Widget _buildCanvas() {
+    return HookConsumer(builder: (context, ref, child) {
+      final controller = ref.watch(drawingControllerProvider);
+      return GestureDetector(
+          child: CustomPaint(
+              painter: AnimalCustomPainter(controller), child: Container()),
+        onPanUpdate: (details) {
+            ref.read(drawingControllerProvider).addOffsets(details.localPosition);
+        },
+      );
+    });
   }
 
   Widget _buildPalette() {
@@ -58,7 +68,9 @@ class DrawPage extends HookConsumerWidget {
               height: 24,
             ),
           ),
-          const SizedBox(width: 12,),
+          const SizedBox(
+            width: 12,
+          ),
           GestureDetector(
             onTap: () {},
             child: Assets.images.draw.forward.svg(
