@@ -10,6 +10,7 @@ class AnimalCustomPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    canvas.saveLayer(Rect.largest, Paint());
     for (var i = 0; i < drawingController.drawHistory.length; i++) {
       final drawHistory = drawingController.drawHistory[i];
       final paint = drawHistory.paint;
@@ -21,8 +22,6 @@ class AnimalCustomPainter extends CustomPainter {
       if (firstPoint == null) {
         continue;
       }
-
-      canvas.saveLayer(Rect.largest, Paint());
 
       if (points.length == 1) {
         canvas.drawPoints(
@@ -36,8 +35,8 @@ class AnimalCustomPainter extends CustomPainter {
         }
         canvas.drawPath(path, paint);
       }
-      canvas.restore();
     }
+    canvas.restore();
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:animal_shogi/data/model/draw_info.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:logger/logger.dart';
 
 final drawingControllerProvider =
     ChangeNotifierProvider.autoDispose((ref) => DrawingController());
@@ -25,12 +26,27 @@ class DrawingController extends ChangeNotifier {
 
   double get strokeWidth => _strokeWidth;
 
-  Paint get paint => Paint()
-    ..color = _color
-    ..strokeWidth = _strokeWidth
-    ..style = PaintingStyle.stroke
-    ..strokeCap = StrokeCap.round
-    ..strokeJoin = StrokeJoin.round;
+  Paint? get paint {
+    switch (drawMode) {
+      case DrawMode.pen:
+        return Paint()
+          ..color = _color
+          ..strokeWidth = _strokeWidth
+          ..style = PaintingStyle.stroke
+          ..strokeCap = StrokeCap.round
+          ..strokeJoin = StrokeJoin.round;
+      case DrawMode.eraser:
+        return Paint()
+          ..blendMode = BlendMode.clear
+          ..strokeWidth = _strokeWidth
+          ..style = PaintingStyle.stroke
+          ..strokeCap = StrokeCap.round
+          ..strokeJoin = StrokeJoin.round;
+      case DrawMode.text:
+      case DrawMode.none:
+        return null;
+    }
+  }
 
   void setColor(Color color) {
     _color = color;
@@ -43,23 +59,40 @@ class DrawingController extends ChangeNotifier {
   }
 
   void pathPanStart(Offset offset) {
-    _drawHistory.add(DrawInfo(
-      drawMode: drawMode,
-      paint: paint,
-      offsets: [offset],
-    ));
-    notifyListeners();
+    switch (drawMode) {
+      case DrawMode.pen:
+      case DrawMode.eraser:
+        _drawHistory.add(DrawInfo(
+          drawMode: drawMode,
+          paint: paint,
+          offsets: [offset],
+        ));
+        notifyListeners();
+        break;
+      case DrawMode.text:
+      case DrawMode.none:
+        return;
+    }
   }
 
   void pathPanUpdate(Offset offset) {
-    final lastDrawInfoOffsets = _drawHistory.last.offsets;
-    if (lastDrawInfoOffsets == null) {
-      return;
+    switch (drawMode) {
+      case DrawMode.pen:
+      case DrawMode.eraser:
+        final lastDrawInfoOffsets = _drawHistory.last.offsets;
+        if (lastDrawInfoOffsets == null) {
+          return;
+        }
+        final changedLastDrawInfo = _drawHistory.last
+            .copyWith(offsets: [...lastDrawInfoOffsets, offset]);
+        _drawHistory.last = changedLastDrawInfo;
+        Logger().i(drawHistory);
+        notifyListeners();
+        break;
+      case DrawMode.text:
+      case DrawMode.none:
+        return;
     }
-    final changedLastDrawInfo =
-        _drawHistory.last.copyWith(offsets: [...lastDrawInfoOffsets, offset]);
-    _drawHistory.last = changedLastDrawInfo;
-    notifyListeners();
   }
 
   void addOffsets(Offset? offset) {
