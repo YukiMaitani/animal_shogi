@@ -29,10 +29,17 @@ class DrawPage extends HookConsumerWidget {
     return HookConsumer(builder: (context, ref, child) {
       final controller = ref.watch(drawingControllerProvider);
       return GestureDetector(
-          child: CustomPaint(
-              painter: AnimalCustomPainter(controller), child: Container()),
+        child: CustomPaint(
+            painter: AnimalCustomPainter(controller), child: Container()),
+        onPanStart: (details) {
+          ref
+              .read(drawingControllerProvider)
+              .pathPanStart(details.localPosition);
+        },
         onPanUpdate: (details) {
-            ref.read(drawingControllerProvider).addOffsets(details.localPosition);
+          ref
+              .read(drawingControllerProvider)
+              .pathPanUpdate(details.localPosition);
         },
       );
     });

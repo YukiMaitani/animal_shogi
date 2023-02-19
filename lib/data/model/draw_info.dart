@@ -12,7 +12,7 @@ class DrawInfo with _$DrawInfo {
   const factory DrawInfo({
     DrawMode? drawMode,
     Paint? paint,
-    List<Offset?>? offset,
+    List<Offset?>? offsets,
     String? text
   }) = _DrawInfo;
 

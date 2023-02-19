@@ -1,3 +1,4 @@
+import 'package:animal_shogi/data/model/draw_info.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,6 +12,10 @@ class DrawingController extends ChangeNotifier {
   DrawMode _drawMode = DrawMode.pen;
 
   DrawMode get drawMode => _drawMode;
+
+  final List<DrawInfo> _drawHistory = [];
+
+  List<DrawInfo> get drawHistory => _drawHistory;
 
   final List<Offset?> _offsets = [];
 
@@ -34,6 +39,26 @@ class DrawingController extends ChangeNotifier {
 
   void setDrawMode(DrawMode drawMode) {
     _drawMode = drawMode;
+    notifyListeners();
+  }
+
+  void pathPanStart(Offset offset) {
+    _drawHistory.add(DrawInfo(
+      drawMode: drawMode,
+      paint: paint,
+      offsets: [offset],
+    ));
+    notifyListeners();
+  }
+
+  void pathPanUpdate(Offset offset) {
+    final lastDrawInfoOffsets = _drawHistory.last.offsets;
+    if (lastDrawInfoOffsets == null) {
+      return;
+    }
+    final changedLastDrawInfo =
+        _drawHistory.last.copyWith(offsets: [...lastDrawInfoOffsets, offset]);
+    _drawHistory.last = changedLastDrawInfo;
     notifyListeners();
   }
 
