@@ -21,9 +21,13 @@ class DrawingController extends ChangeNotifier {
 
   List<Offset?> get offsets => _offsets;
 
-  double _strokeWidth = 10;
+  double _penWidth = 12;
 
-  double get strokeWidth => _strokeWidth;
+  double get penWidth => _penWidth;
+
+  double _eraserWidth = 12;
+
+  double get eraserWidth => _eraserWidth;
 
   final List<List<DrawInfo>> _drawHistory = [[]];
 
@@ -38,14 +42,14 @@ class DrawingController extends ChangeNotifier {
       case DrawMode.pen:
         return Paint()
           ..color = _color
-          ..strokeWidth = _strokeWidth
+          ..strokeWidth = _penWidth
           ..style = PaintingStyle.stroke
           ..strokeCap = StrokeCap.round
           ..strokeJoin = StrokeJoin.round;
       case DrawMode.eraser:
         return Paint()
           ..blendMode = BlendMode.clear
-          ..strokeWidth = _strokeWidth
+          ..strokeWidth = _eraserWidth
           ..style = PaintingStyle.stroke
           ..strokeCap = StrokeCap.round
           ..strokeJoin = StrokeJoin.round;
@@ -113,8 +117,13 @@ class DrawingController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setStrokeWidth(double strokeWidth) {
-    _strokeWidth = strokeWidth;
+  void setPenWidth(double penWidth) {
+    _penWidth = penWidth;
+    notifyListeners();
+  }
+
+  void setEraserWidth(double eraserWidth) {
+    _eraserWidth = eraserWidth;
     notifyListeners();
   }
 

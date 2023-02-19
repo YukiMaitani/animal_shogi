@@ -3,6 +3,7 @@ import 'package:animal_shogi/pages/draw/animal_custom_painter.dart';
 import 'package:animal_shogi/pages/draw/drawing_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 
 import '../../gen/assets.gen.dart';
 
@@ -70,36 +71,94 @@ class DrawPage extends HookConsumerWidget {
 
   Widget _buildPen() {
     return HookConsumer(builder: (context, ref, child) {
+      final penWidth = ref.watch(
+          drawingControllerProvider.select((value) => value.penWidth));
       final drawingMode = ref
           .watch(drawingControllerProvider.select((value) => value.drawMode));
       final isSelected = drawingMode == DrawMode.pen;
-      return GestureDetector(
-        onTap: () {
-          ref.read(drawingControllerProvider).setDrawMode(DrawMode.pen);
+      return CustomPopupMenu(
+        barrierColor: Colors.transparent,
+        arrowSize: 20,
+        arrowColor: paletteSliderBackgroundColor,
+        menuBuilder: () {
+          return Container(
+            height: 48,
+            width: 220,
+            decoration: BoxDecoration(
+                color: paletteSliderBackgroundColor,
+                borderRadius: BorderRadius.circular(20)
+            ),
+            child: Slider(
+              value: penWidth,
+              onChanged: (value) {
+                ref.read(drawingControllerProvider).setPenWidth(value);
+              },
+              activeColor: paletteSliderColor,
+              //thumbColor: paletteSliderColor,
+              divisions: 5,
+              min: 1,
+              max: 30,
+            ),
+          );
         },
-        child: Assets.images.draw.brush.svg(
-            height: 40,
-            colorFilter: ColorFilter.mode(
-                isSelected ? paletteButtonOnColor : paletteButtonOffColor,
-                BlendMode.srcIn)),
+        pressType: PressType.singleClick,
+        child: GestureDetector(
+          onTap: isSelected ? null : () {
+            ref.read(drawingControllerProvider).setDrawMode(DrawMode.pen);
+          },
+          child: Assets.images.draw.brush.svg(
+              height: 40,
+              colorFilter: ColorFilter.mode(
+                  isSelected ? paletteButtonOnColor : paletteButtonOffColor,
+                  BlendMode.srcIn)),
+        ),
       );
     });
   }
 
   Widget _buildEraser() {
     return HookConsumer(builder: (context, ref, child) {
+      final eraserWidth = ref.watch(
+          drawingControllerProvider.select((value) => value.eraserWidth));
       final drawingMode = ref
           .watch(drawingControllerProvider.select((value) => value.drawMode));
       final isSelected = drawingMode == DrawMode.eraser;
-      return GestureDetector(
-        onTap: () {
-          ref.read(drawingControllerProvider).setDrawMode(DrawMode.eraser);
+      return CustomPopupMenu(
+        barrierColor: Colors.transparent,
+        arrowSize: 20,
+        arrowColor: paletteSliderBackgroundColor,
+        menuBuilder: () {
+          return Container(
+            height: 48,
+            width: 220,
+            decoration: BoxDecoration(
+                color: paletteSliderBackgroundColor,
+                borderRadius: BorderRadius.circular(20)
+            ),
+            child: Slider(
+              value: eraserWidth,
+              onChanged: (value) {
+                ref.read(drawingControllerProvider).setEraserWidth(value);
+              },
+              activeColor: paletteSliderColor,
+              //thumbColor: paletteSliderColor,
+              divisions: 5,
+              min: 1,
+              max: 30,
+            ),
+          );
         },
-        child: Assets.images.draw.eraser.svg(
-            height: 40,
-            colorFilter: ColorFilter.mode(
-                isSelected ? paletteButtonOnColor : paletteButtonOffColor,
-                BlendMode.srcIn)),
+        pressType: PressType.singleClick,
+        child: GestureDetector(
+          onTap: isSelected ? null : () {
+            ref.read(drawingControllerProvider).setDrawMode(DrawMode.eraser);
+          },
+          child: Assets.images.draw.eraser.svg(
+              height: 40,
+              colorFilter: ColorFilter.mode(
+                  isSelected ? paletteButtonOnColor : paletteButtonOffColor,
+                  BlendMode.srcIn)),
+        ),
       );
     });
   }
