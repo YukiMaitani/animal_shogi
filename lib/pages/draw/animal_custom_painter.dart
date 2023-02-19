@@ -11,10 +11,10 @@ class AnimalCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     canvas.saveLayer(Rect.largest, Paint());
-    for (var i = 0; i < drawingController.drawHistory.length; i++) {
-      final drawHistory = drawingController.drawHistory[i];
-      final paint = drawHistory.paint;
-      final points = drawHistory.offsets;
+    for (var i = 0; i < drawingController.drawInfoList.length; i++) {
+      final drawInfo = drawingController.drawInfoList[i];
+      final paint = drawInfo.paint;
+      final points = drawInfo.offsets;
       if (points == null || points.isEmpty || paint == null) {
         continue;
       }

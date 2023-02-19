@@ -1,7 +1,6 @@
 import 'package:animal_shogi/data/model/draw_info.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logger/logger.dart';
 
 final drawingControllerProvider =
     ChangeNotifierProvider.autoDispose((ref) => DrawingController());
@@ -14,9 +13,9 @@ class DrawingController extends ChangeNotifier {
 
   DrawMode get drawMode => _drawMode;
 
-  final List<DrawInfo> _drawHistory = [];
+  final List<DrawInfo> _drawInfoList = [];
 
-  List<DrawInfo> get drawHistory => _drawHistory;
+  List<DrawInfo> get drawInfoList => _drawInfoList;
 
   final List<Offset?> _offsets = [];
 
@@ -62,7 +61,7 @@ class DrawingController extends ChangeNotifier {
     switch (drawMode) {
       case DrawMode.pen:
       case DrawMode.eraser:
-        _drawHistory.add(DrawInfo(
+        _drawInfoList.add(DrawInfo(
           drawMode: drawMode,
           paint: paint,
           offsets: [offset],
@@ -79,14 +78,13 @@ class DrawingController extends ChangeNotifier {
     switch (drawMode) {
       case DrawMode.pen:
       case DrawMode.eraser:
-        final lastDrawInfoOffsets = _drawHistory.last.offsets;
+        final lastDrawInfoOffsets = _drawInfoList.last.offsets;
         if (lastDrawInfoOffsets == null) {
           return;
         }
-        final changedLastDrawInfo = _drawHistory.last
+        final changedLastDrawInfo = _drawInfoList.last
             .copyWith(offsets: [...lastDrawInfoOffsets, offset]);
-        _drawHistory.last = changedLastDrawInfo;
-        Logger().i(drawHistory);
+        _drawInfoList.last = changedLastDrawInfo;
         notifyListeners();
         break;
       case DrawMode.text:
