@@ -71,8 +71,8 @@ class DrawPage extends HookConsumerWidget {
 
   Widget _buildPen() {
     return HookConsumer(builder: (context, ref, child) {
-      final penWidth = ref.watch(
-          drawingControllerProvider.select((value) => value.penWidth));
+      final penWidth = ref
+          .watch(drawingControllerProvider.select((value) => value.penWidth));
       final drawingMode = ref
           .watch(drawingControllerProvider.select((value) => value.drawMode));
       final isSelected = drawingMode == DrawMode.pen;
@@ -86,8 +86,7 @@ class DrawPage extends HookConsumerWidget {
             width: 220,
             decoration: BoxDecoration(
                 color: paletteSliderBackgroundColor,
-                borderRadius: BorderRadius.circular(20)
-            ),
+                borderRadius: BorderRadius.circular(20)),
             child: Slider(
               value: penWidth,
               onChanged: (value) {
@@ -103,9 +102,11 @@ class DrawPage extends HookConsumerWidget {
         },
         pressType: PressType.singleClick,
         child: GestureDetector(
-          onTap: isSelected ? null : () {
-            ref.read(drawingControllerProvider).setDrawMode(DrawMode.pen);
-          },
+          onTap: isSelected
+              ? null
+              : () {
+                  ref.read(drawingControllerProvider).setDrawMode(DrawMode.pen);
+                },
           child: Assets.images.draw.brush.svg(
               height: 40,
               colorFilter: ColorFilter.mode(
@@ -129,30 +130,88 @@ class DrawPage extends HookConsumerWidget {
         arrowColor: paletteSliderBackgroundColor,
         menuBuilder: () {
           return Container(
-            height: 48,
-            width: 220,
+            height: 96,
+            width: 320,
             decoration: BoxDecoration(
                 color: paletteSliderBackgroundColor,
-                borderRadius: BorderRadius.circular(20)
-            ),
-            child: Slider(
-              value: eraserWidth,
-              onChanged: (value) {
-                ref.read(drawingControllerProvider).setEraserWidth(value);
-              },
-              activeColor: paletteSliderColor,
-              //thumbColor: paletteSliderColor,
-              divisions: 5,
-              min: 1,
-              max: 30,
+                borderRadius: BorderRadius.circular(20)),
+            child: DefaultTabController(
+              length: 2,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 48,
+                    child: TabBar(
+                      tabs: [
+                        Tab(
+                          child: Text(
+                            'ピクセル消しゴム',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            'オブジェクト消しゴム',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 48,
+                    child: TabBarView(
+                      children: [
+                        Slider(
+                          value: eraserWidth,
+                          onChanged: (value) {
+                            ref
+                                .read(drawingControllerProvider)
+                                .setEraserWidth(value);
+                          },
+                          activeColor: paletteSliderColor,
+                          //thumbColor: paletteSliderColor,
+                          divisions: 5,
+                          min: 1,
+                          max: 30,
+                        ),
+                        Center(
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: Container(
+                              margin: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(10)
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  '×',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                      fontSize: 32),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         },
         pressType: PressType.singleClick,
         child: GestureDetector(
-          onTap: isSelected ? null : () {
-            ref.read(drawingControllerProvider).setDrawMode(DrawMode.eraser);
-          },
+          onTap: isSelected
+              ? null
+              : () {
+                  ref
+                      .read(drawingControllerProvider)
+                      .setDrawMode(DrawMode.eraser);
+                },
           child: Assets.images.draw.eraser.svg(
               height: 40,
               colorFilter: ColorFilter.mode(
