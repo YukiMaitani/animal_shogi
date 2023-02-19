@@ -41,6 +41,9 @@ class DrawPage extends HookConsumerWidget {
               .read(drawingControllerProvider)
               .pathPanUpdate(details.localPosition);
         },
+        onPanEnd: (_) {
+          ref.read(drawingControllerProvider).addDrawHistory();
+        },
       );
     });
   }
@@ -63,30 +66,6 @@ class DrawPage extends HookConsumerWidget {
         ),
       ),
     );
-  }
-
-  Widget _buildBackForward() {
-    return HookConsumer(builder: (context, ref, child) {
-      return Row(
-        children: [
-          GestureDetector(
-            onTap: () {},
-            child: Assets.images.draw.back.svg(
-              height: 24,
-            ),
-          ),
-          const SizedBox(
-            width: 12,
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: Assets.images.draw.forward.svg(
-              height: 24,
-            ),
-          ),
-        ],
-      );
-    });
   }
 
   Widget _buildPen() {
@@ -158,6 +137,34 @@ class DrawPage extends HookConsumerWidget {
             height: 40,
             colorFilter: ColorFilter.mode(selectedColor, BlendMode.srcIn),
           ));
+    });
+  }
+
+  Widget _buildBackForward() {
+    return HookConsumer(builder: (context, ref, child) {
+      return Row(
+        children: [
+          GestureDetector(
+            onTap: () {
+              ref.read(drawingControllerProvider).undo();
+            },
+            child: Assets.images.draw.back.svg(
+              height: 24,
+            ),
+          ),
+          const SizedBox(
+            width: 12,
+          ),
+          GestureDetector(
+            onTap: () {
+              ref.read(drawingControllerProvider).redo();
+            },
+            child: Assets.images.draw.forward.svg(
+              height: 24,
+            ),
+          ),
+        ],
+      );
     });
   }
 }
