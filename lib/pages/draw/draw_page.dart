@@ -71,8 +71,6 @@ class DrawPage extends HookConsumerWidget {
 
   Widget _buildPen() {
     return HookConsumer(builder: (context, ref, child) {
-      final penWidth = ref
-          .watch(drawingControllerProvider.select((value) => value.penWidth));
       final drawingMode = ref
           .watch(drawingControllerProvider.select((value) => value.drawMode));
       final isSelected = drawingMode == DrawMode.pen;
@@ -83,20 +81,26 @@ class DrawPage extends HookConsumerWidget {
         menuBuilder: () {
           return Container(
             height: 48,
-            width: 220,
+            width: 320,
             decoration: BoxDecoration(
                 color: paletteSliderBackgroundColor,
                 borderRadius: BorderRadius.circular(20)),
-            child: Slider(
-              value: penWidth,
-              onChanged: (value) {
-                ref.read(drawingControllerProvider).setPenWidth(value);
+            child: HookConsumer(
+              builder: (context, ref, child) {
+                final penWidth = ref
+                    .watch(drawingControllerProvider.select((value) => value.penWidth));
+                return Slider(
+                  value: penWidth,
+                  onChanged: (value) {
+                    ref.read(drawingControllerProvider).setPenWidth(value);
+                  },
+                  thumbColor: paletteSliderColor,
+                  activeColor: paletteSliderColor,
+                  divisions: 5,
+                  min: 1,
+                  max: 30,
+                );
               },
-              activeColor: paletteSliderColor,
-              //thumbColor: paletteSliderColor,
-              divisions: 5,
-              min: 1,
-              max: 30,
             ),
           );
         },
@@ -119,8 +123,6 @@ class DrawPage extends HookConsumerWidget {
 
   Widget _buildEraser() {
     return HookConsumer(builder: (context, ref, child) {
-      final eraserWidth = ref.watch(
-          drawingControllerProvider.select((value) => value.eraserWidth));
       final drawingMode = ref
           .watch(drawingControllerProvider.select((value) => value.drawMode));
       final isSelected = drawingMode == DrawMode.eraser;
@@ -162,18 +164,24 @@ class DrawPage extends HookConsumerWidget {
                     height: 48,
                     child: TabBarView(
                       children: [
-                        Slider(
-                          value: eraserWidth,
-                          onChanged: (value) {
-                            ref
-                                .read(drawingControllerProvider)
-                                .setEraserWidth(value);
+                        HookConsumer(
+                          builder: (context, ref, child) {
+                            final eraserWidth = ref.watch(
+                                drawingControllerProvider.select((value) => value.eraserWidth));
+                            return Slider(
+                              value: eraserWidth,
+                              onChanged: (value) {
+                                ref
+                                    .read(drawingControllerProvider)
+                                    .setEraserWidth(value);
+                              },
+                              activeColor: paletteSliderColor,
+                              //thumbColor: paletteSliderColor,
+                              divisions: 5,
+                              min: 1,
+                              max: 30,
+                            );
                           },
-                          activeColor: paletteSliderColor,
-                          //thumbColor: paletteSliderColor,
-                          divisions: 5,
-                          min: 1,
-                          max: 30,
                         ),
                         Center(
                           child: AspectRatio(
@@ -181,15 +189,13 @@ class DrawPage extends HookConsumerWidget {
                             child: Container(
                               margin: const EdgeInsets.all(4),
                               decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(10)
-                              ),
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(10)),
                               child: const Center(
                                 child: Text(
                                   '×',
                                   style: TextStyle(
-                                    color: Colors.white,
-                                      fontSize: 32),
+                                      color: Colors.white, fontSize: 32),
                                 ),
                               ),
                             ),
