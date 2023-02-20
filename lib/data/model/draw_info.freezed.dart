@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$DrawInfo {
-  DrawMode? get drawMode => throw _privateConstructorUsedError;
+  DrawType get drawType => throw _privateConstructorUsedError;
   Paint? get paint => throw _privateConstructorUsedError;
   List<Offset?>? get offsets => throw _privateConstructorUsedError;
   String? get text => throw _privateConstructorUsedError;
@@ -32,7 +32,7 @@ abstract class $DrawInfoCopyWith<$Res> {
       _$DrawInfoCopyWithImpl<$Res, DrawInfo>;
   @useResult
   $Res call(
-      {DrawMode? drawMode, Paint? paint, List<Offset?>? offsets, String? text});
+      {DrawType drawType, Paint? paint, List<Offset?>? offsets, String? text});
 }
 
 /// @nodoc
@@ -48,16 +48,16 @@ class _$DrawInfoCopyWithImpl<$Res, $Val extends DrawInfo>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? drawMode = freezed,
+    Object? drawType = null,
     Object? paint = freezed,
     Object? offsets = freezed,
     Object? text = freezed,
   }) {
     return _then(_value.copyWith(
-      drawMode: freezed == drawMode
-          ? _value.drawMode
-          : drawMode // ignore: cast_nullable_to_non_nullable
-              as DrawMode?,
+      drawType: null == drawType
+          ? _value.drawType
+          : drawType // ignore: cast_nullable_to_non_nullable
+              as DrawType,
       paint: freezed == paint
           ? _value.paint
           : paint // ignore: cast_nullable_to_non_nullable
@@ -82,7 +82,7 @@ abstract class _$$_DrawInfoCopyWith<$Res> implements $DrawInfoCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {DrawMode? drawMode, Paint? paint, List<Offset?>? offsets, String? text});
+      {DrawType drawType, Paint? paint, List<Offset?>? offsets, String? text});
 }
 
 /// @nodoc
@@ -96,16 +96,16 @@ class __$$_DrawInfoCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? drawMode = freezed,
+    Object? drawType = null,
     Object? paint = freezed,
     Object? offsets = freezed,
     Object? text = freezed,
   }) {
     return _then(_$_DrawInfo(
-      drawMode: freezed == drawMode
-          ? _value.drawMode
-          : drawMode // ignore: cast_nullable_to_non_nullable
-              as DrawMode?,
+      drawType: null == drawType
+          ? _value.drawType
+          : drawType // ignore: cast_nullable_to_non_nullable
+              as DrawType,
       paint: freezed == paint
           ? _value.paint
           : paint // ignore: cast_nullable_to_non_nullable
@@ -126,11 +126,14 @@ class __$$_DrawInfoCopyWithImpl<$Res>
 
 class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
   const _$_DrawInfo(
-      {this.drawMode, this.paint, final List<Offset?>? offsets, this.text})
+      {required this.drawType,
+      this.paint,
+      final List<Offset?>? offsets,
+      this.text})
       : _offsets = offsets;
 
   @override
-  final DrawMode? drawMode;
+  final DrawType drawType;
   @override
   final Paint? paint;
   final List<Offset?>? _offsets;
@@ -148,7 +151,7 @@ class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'DrawInfo(drawMode: $drawMode, paint: $paint, offsets: $offsets, text: $text)';
+    return 'DrawInfo(drawType: $drawType, paint: $paint, offsets: $offsets, text: $text)';
   }
 
   @override
@@ -156,7 +159,7 @@ class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'DrawInfo'))
-      ..add(DiagnosticsProperty('drawMode', drawMode))
+      ..add(DiagnosticsProperty('drawType', drawType))
       ..add(DiagnosticsProperty('paint', paint))
       ..add(DiagnosticsProperty('offsets', offsets))
       ..add(DiagnosticsProperty('text', text));
@@ -167,15 +170,15 @@ class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_DrawInfo &&
-            (identical(other.drawMode, drawMode) ||
-                other.drawMode == drawMode) &&
+            (identical(other.drawType, drawType) ||
+                other.drawType == drawType) &&
             (identical(other.paint, paint) || other.paint == paint) &&
             const DeepCollectionEquality().equals(other._offsets, _offsets) &&
             (identical(other.text, text) || other.text == text));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, drawMode, paint,
+  int get hashCode => Object.hash(runtimeType, drawType, paint,
       const DeepCollectionEquality().hash(_offsets), text);
 
   @JsonKey(ignore: true)
@@ -187,13 +190,13 @@ class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
 
 abstract class _DrawInfo implements DrawInfo {
   const factory _DrawInfo(
-      {final DrawMode? drawMode,
+      {required final DrawType drawType,
       final Paint? paint,
       final List<Offset?>? offsets,
       final String? text}) = _$_DrawInfo;
 
   @override
-  DrawMode? get drawMode;
+  DrawType get drawType;
   @override
   Paint? get paint;
   @override

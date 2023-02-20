@@ -72,9 +72,17 @@ class DrawingController extends ChangeNotifier {
   void pathPanStart(Offset offset) {
     switch (drawMode) {
       case DrawMode.pen:
+        _drawInfoList.add(DrawInfo(
+          drawType: DrawType.pen,
+          paint: paint,
+          offsets: [offset],
+        ));
+        _undoList = [];
+        notifyListeners();
+        break;
       case DrawMode.eraser:
         _drawInfoList.add(DrawInfo(
-          drawMode: drawMode,
+          drawType: DrawType.eraser,
           paint: paint,
           offsets: [offset],
         ));

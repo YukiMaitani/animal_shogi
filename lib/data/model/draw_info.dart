@@ -6,14 +6,21 @@ import 'package:flutter/foundation.dart';
 
 part 'draw_info.freezed.dart';
 
+//part 'draw_info.g.dart';
+
 
 @freezed
 class DrawInfo with _$DrawInfo {
   const factory DrawInfo({
-    DrawMode? drawMode,
+    required DrawType drawType,
     Paint? paint,
     List<Offset?>? offsets,
     String? text
   }) = _DrawInfo;
 
+  //factory DrawInfo.fromJson(Map<String, Object?> json) => _$DrawInfoFromJson(json);
+}
+
+enum DrawType {
+  pen, eraser, text
 }

@@ -20,23 +20,23 @@ class $AssetImagesGen {
 class $AssetImagesDrawGen {
   const $AssetImagesDrawGen();
 
+  /// File path: asset/images/draw/back.svg
+  SvgGenImage get back => const SvgGenImage('asset/images/draw/back.svg');
+
   /// File path: asset/images/draw/brush.svg
   SvgGenImage get brush => const SvgGenImage('asset/images/draw/brush.svg');
 
   /// File path: asset/images/draw/eraser.svg
   SvgGenImage get eraser => const SvgGenImage('asset/images/draw/eraser.svg');
 
-  /// File path: asset/images/draw/palette.svg
-  SvgGenImage get palette => const SvgGenImage('asset/images/draw/palette.svg');
-
-  /// File path: asset/images/draw/back.svg
-  SvgGenImage get back => const SvgGenImage('asset/images/draw/back.svg');
-
   /// File path: asset/images/draw/forward.svg
   SvgGenImage get forward => const SvgGenImage('asset/images/draw/forward.svg');
 
+  /// File path: asset/images/draw/palette.svg
+  SvgGenImage get palette => const SvgGenImage('asset/images/draw/palette.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [brush, eraser, palette, back, forward];
+  List<SvgGenImage> get values => [back, brush, eraser, forward, palette];
 }
 
 class Assets {
