@@ -4,6 +4,7 @@ import 'package:animal_shogi/pages/draw/drawing_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:logger/logger.dart';
 
 import '../../gen/assets.gen.dart';
 
@@ -87,8 +88,8 @@ class DrawPage extends HookConsumerWidget {
                 borderRadius: BorderRadius.circular(20)),
             child: HookConsumer(
               builder: (context, ref, child) {
-                final penWidth = ref
-                    .watch(drawingControllerProvider.select((value) => value.penWidth));
+                final penWidth = ref.watch(drawingControllerProvider
+                    .select((value) => value.penWidth));
                 return Slider(
                   value: penWidth,
                   onChanged: (value) {
@@ -125,13 +126,15 @@ class DrawPage extends HookConsumerWidget {
     return HookConsumer(builder: (context, ref, child) {
       final drawingMode = ref
           .watch(drawingControllerProvider.select((value) => value.drawMode));
-      final isSelected = drawingMode == DrawMode.eraser;
+      final isSelected = drawingMode == DrawMode.pixelEraser ||
+          drawingMode == DrawMode.objectEraser;
       return CustomPopupMenu(
         barrierColor: Colors.transparent,
         arrowSize: 20,
         arrowColor: paletteSliderBackgroundColor,
         menuBuilder: () {
           return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             height: 96,
             width: 320,
             decoration: BoxDecoration(
@@ -139,73 +142,86 @@ class DrawPage extends HookConsumerWidget {
                 borderRadius: BorderRadius.circular(20)),
             child: DefaultTabController(
               length: 2,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 48,
-                    child: TabBar(
-                      tabs: [
-                        Tab(
-                          child: Text(
-                            'ピクセル消しゴム',
-                            style: TextStyle(fontSize: 12),
+              child: Builder(builder: (context) {
+                final tabController = DefaultTabController.of(context);
+                final currentEraserTabIndex =
+                    ref.watch(drawingControllerProvider).currentEraserTabIndex;
+                tabController.index = currentEraserTabIndex;
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 48,
+                      child: TabBar(
+                        indicatorColor: paletteButtonOnColor,
+                        tabs: const [
+                          Tab(
+                            child: Text(
+                              'ピクセル消しゴム',
+                              style: TextStyle(fontSize: 12),
+                            ),
                           ),
-                        ),
-                        Tab(
-                          child: Text(
-                            'オブジェクト消しゴム',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        )
-                      ],
+                          Tab(
+                            child: Text(
+                              'オブジェクト消しゴム',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          )
+                        ],
+                        onTap: (index) {
+                          ref
+                              .read(drawingControllerProvider)
+                              .setEraserMode(index);
+                        },
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 48,
-                    child: TabBarView(
-                      children: [
-                        HookConsumer(
-                          builder: (context, ref, child) {
-                            final eraserWidth = ref.watch(
-                                drawingControllerProvider.select((value) => value.eraserWidth));
-                            return Slider(
-                              value: eraserWidth,
-                              onChanged: (value) {
-                                ref
-                                    .read(drawingControllerProvider)
-                                    .setEraserWidth(value);
-                              },
-                              activeColor: paletteSliderColor,
-                              //thumbColor: paletteSliderColor,
-                              divisions: 5,
-                              min: 1,
-                              max: 30,
-                            );
-                          },
-                        ),
-                        Center(
-                          child: AspectRatio(
-                            aspectRatio: 1,
-                            child: Container(
-                              margin: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: const Center(
-                                child: Text(
-                                  '×',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 32),
+                    SizedBox(
+                      height: 48,
+                      child: TabBarView(
+                        children: [
+                          HookConsumer(
+                            builder: (context, ref, child) {
+                              final eraserWidth = ref.watch(
+                                  drawingControllerProvider
+                                      .select((value) => value.eraserWidth));
+                              return Slider(
+                                value: eraserWidth,
+                                onChanged: (value) {
+                                  ref
+                                      .read(drawingControllerProvider)
+                                      .setEraserWidth(value);
+                                },
+                                activeColor: paletteSliderColor,
+                                //thumbColor: paletteSliderColor,
+                                divisions: 5,
+                                min: 1,
+                                max: 30,
+                              );
+                            },
+                          ),
+                          Center(
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Container(
+                                margin: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: const Center(
+                                  child: Text(
+                                    '×',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 32),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                );
+              }),
             ),
           );
         },
@@ -214,9 +230,11 @@ class DrawPage extends HookConsumerWidget {
           onTap: isSelected
               ? null
               : () {
+                  final currentEraserTabIndex =
+                      ref.read(drawingControllerProvider).currentEraserTabIndex;
                   ref
                       .read(drawingControllerProvider)
-                      .setDrawMode(DrawMode.eraser);
+                      .setEraserMode(currentEraserTabIndex);
                 },
           child: Assets.images.draw.eraser.svg(
               height: 40,

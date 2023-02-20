@@ -37,6 +37,14 @@ class DrawingController extends ChangeNotifier {
 
   List<List<DrawInfo>> get undoList => _undoList;
 
+  int get currentEraserTabIndex {
+    if(drawMode == DrawMode.objectEraser) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
   Paint? get paint {
     switch (drawMode) {
       case DrawMode.pen:
@@ -46,13 +54,14 @@ class DrawingController extends ChangeNotifier {
           ..style = PaintingStyle.stroke
           ..strokeCap = StrokeCap.round
           ..strokeJoin = StrokeJoin.round;
-      case DrawMode.eraser:
+      case DrawMode.pixelEraser:
         return Paint()
           ..blendMode = BlendMode.clear
           ..strokeWidth = _eraserWidth
           ..style = PaintingStyle.stroke
           ..strokeCap = StrokeCap.round
           ..strokeJoin = StrokeJoin.round;
+      case DrawMode.objectEraser:
       case DrawMode.text:
       case DrawMode.none:
         return null;
@@ -80,7 +89,7 @@ class DrawingController extends ChangeNotifier {
         _undoList = [];
         notifyListeners();
         break;
-      case DrawMode.eraser:
+      case DrawMode.pixelEraser:
         _drawInfoList.add(DrawInfo(
           drawType: DrawType.eraser,
           paint: paint,
@@ -88,6 +97,8 @@ class DrawingController extends ChangeNotifier {
         ));
         _undoList = [];
         notifyListeners();
+        break;
+      case DrawMode.objectEraser:
         break;
       case DrawMode.text:
       case DrawMode.none:
@@ -98,7 +109,7 @@ class DrawingController extends ChangeNotifier {
   void pathPanUpdate(Offset offset) {
     switch (drawMode) {
       case DrawMode.pen:
-      case DrawMode.eraser:
+      case DrawMode.pixelEraser:
         final lastDrawInfoOffsets = _drawInfoList.last.offsets;
         if (lastDrawInfoOffsets == null) {
           return;
@@ -109,6 +120,7 @@ class DrawingController extends ChangeNotifier {
         _undoList = [];
         notifyListeners();
         break;
+      case DrawMode.objectEraser:
       case DrawMode.text:
       case DrawMode.none:
         return;
@@ -135,6 +147,11 @@ class DrawingController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setEraserMode(int tabIndex) {
+    if(tabIndex == 0) { _drawMode = DrawMode.pixelEraser; }
+    if(tabIndex == 1) { _drawMode = DrawMode.objectEraser; }
+  }
+
   void undo() {
     if(_drawHistory.length <= 1) { return; }
     final lastHistory = _drawHistory.last;
@@ -155,4 +172,4 @@ class DrawingController extends ChangeNotifier {
   }
 }
 
-enum DrawMode { pen, eraser, text, none }
+enum DrawMode { pen, pixelEraser,objectEraser, text, none }
