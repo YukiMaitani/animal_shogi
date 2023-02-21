@@ -149,13 +149,19 @@ class DrawingController extends ChangeNotifier {
   }
 
   void setEraserMode() {
-    if(currentEraserTabIndex == 0) { _drawMode = DrawMode.pixelEraser; }
-    if(currentEraserTabIndex == 1) { _drawMode = DrawMode.objectEraser; }
+    if (currentEraserTabIndex == 0) {
+      _drawMode = DrawMode.pixelEraser;
+    }
+    if (currentEraserTabIndex == 1) {
+      _drawMode = DrawMode.objectEraser;
+    }
     notifyListeners();
   }
 
   void undo() {
-    if(_drawHistory.length <= 1) { return; }
+    if (_drawHistory.length <= 1) {
+      return;
+    }
     final lastHistory = _drawHistory.last;
     final backedDrawInfo = _drawHistory[_drawHistory.length - 2];
     _drawInfoList = List.of(backedDrawInfo);
@@ -165,13 +171,57 @@ class DrawingController extends ChangeNotifier {
   }
 
   void redo() {
-    if(_undoList.isEmpty) { return; }
+    if (_undoList.isEmpty) {
+      return;
+    }
     final lastUndo = _undoList.last;
     _drawInfoList = List.of(lastUndo);
     _drawHistory.add(List.of(lastUndo));
     _undoList.removeLast();
     notifyListeners();
   }
+
+  void objectErase(Offset tapPoint) {
+    if(_drawMode != DrawMode.objectEraser) { return; }
+    final List<DrawInfo> erasedList = [];
+    for(final drawInfo in _drawInfoList) {
+      if(drawInfo.drawType != DrawType.pen) {
+        erasedList.add(drawInfo);
+        continue;
+      }
+      final offsets = drawInfo.offsets;
+      if(offsets == null || offsets.isEmpty) {
+        erasedList.add(drawInfo);
+        continue;
+      }
+      if(offsets.length == 1) {
+        if(offsets[0] != tapPoint) {
+          erasedList.add(drawInfo);
+        }
+      } else {
+        final firstPoint = offsets[0];
+        if(firstPoint == null) {
+          erasedList.add(drawInfo);
+          continue;
+        }
+        final path = Path()..moveTo(firstPoint.dx, firstPoint.dy);
+        for(var i = 1; i < offsets.length; i++) {
+          if(offsets[i] != null) {
+            path.lineTo(offsets[i]!.dx, offsets[i]!.dy);
+          }
+        }
+        if(!path.contains(tapPoint)) {
+          erasedList.add(drawInfo);
+        }
+      }
+    }
+    if(_drawInfoList.length != erasedList.length) {
+      _drawInfoList = erasedList;
+      addDrawHistory();
+      _undoList = [];
+      notifyListeners();
+    }
+  }
 }
 
-enum DrawMode { pen, pixelEraser,objectEraser, text, none }
+enum DrawMode { pen, pixelEraser, objectEraser, text, none }

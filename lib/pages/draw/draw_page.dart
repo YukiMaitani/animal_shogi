@@ -33,6 +33,9 @@ class DrawPage extends HookConsumerWidget {
       return GestureDetector(
         child: CustomPaint(
             painter: AnimalCustomPainter(controller), child: Container()),
+        onTapDown: (details) {
+          ref.read(drawingControllerProvider).objectErase(details.localPosition);
+        },
         onPanStart: (details) {
           ref
               .read(drawingControllerProvider)
