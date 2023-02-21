@@ -142,7 +142,7 @@ class DrawPage extends HookConsumerWidget {
                 borderRadius: BorderRadius.circular(20)),
             child: DefaultTabController(
               length: 2,
-              child: Builder(builder: (context) {
+              child: HookConsumer(builder: (context, re, child) {
                 final tabController = DefaultTabController.of(context);
                 final currentEraserTabIndex =
                     ref.watch(drawingControllerProvider).currentEraserTabIndex;
@@ -170,7 +170,8 @@ class DrawPage extends HookConsumerWidget {
                         onTap: (index) {
                           ref
                               .read(drawingControllerProvider)
-                              .setEraserMode(index);
+                              .currentEraserTabIndex = index;
+                          ref.read(drawingControllerProvider).setEraserMode();
                         },
                       ),
                     ),
@@ -230,11 +231,9 @@ class DrawPage extends HookConsumerWidget {
           onTap: isSelected
               ? null
               : () {
-                  final currentEraserTabIndex =
-                      ref.read(drawingControllerProvider).currentEraserTabIndex;
                   ref
                       .read(drawingControllerProvider)
-                      .setEraserMode(currentEraserTabIndex);
+                      .setEraserMode();
                 },
           child: Assets.images.draw.eraser.svg(
               height: 40,

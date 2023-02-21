@@ -37,12 +37,13 @@ class DrawingController extends ChangeNotifier {
 
   List<List<DrawInfo>> get undoList => _undoList;
 
-  int get currentEraserTabIndex {
-    if(drawMode == DrawMode.objectEraser) {
-      return 1;
-    } else {
-      return 0;
-    }
+  int _currentEraserTabIndex = 0;
+
+  int get currentEraserTabIndex => _currentEraserTabIndex;
+
+  set currentEraserTabIndex(int value) {
+    _currentEraserTabIndex = value;
+    notifyListeners();
   }
 
   Paint? get paint {
@@ -147,9 +148,10 @@ class DrawingController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setEraserMode(int tabIndex) {
-    if(tabIndex == 0) { _drawMode = DrawMode.pixelEraser; }
-    if(tabIndex == 1) { _drawMode = DrawMode.objectEraser; }
+  void setEraserMode() {
+    if(currentEraserTabIndex == 0) { _drawMode = DrawMode.pixelEraser; }
+    if(currentEraserTabIndex == 1) { _drawMode = DrawMode.objectEraser; }
+    notifyListeners();
   }
 
   void undo() {
