@@ -44,6 +44,7 @@ dependencies:
   analyzer: ^5.5.0
   flutter_svg: ^2.0.1
   custom_pop_up_menu: ^1.2.4
+  collection: ^1.15.0
 
 dev_dependencies:
   flutter_test:
