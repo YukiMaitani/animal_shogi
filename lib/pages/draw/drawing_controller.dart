@@ -182,40 +182,31 @@ class DrawingController extends ChangeNotifier {
   }
 
   void objectErase(Offset tapPoint) {
-    if(_drawMode != DrawMode.objectEraser) { return; }
     final List<DrawInfo> erasedList = [];
-    for(final drawInfo in _drawInfoList) {
-      if(drawInfo.drawType != DrawType.pen) {
+    outer:
+    for (final drawInfo in _drawInfoList) {
+      if (drawInfo.drawType != DrawType.pen) {
         erasedList.add(drawInfo);
         continue;
       }
       final offsets = drawInfo.offsets;
-      if(offsets == null || offsets.isEmpty) {
+      if (offsets == null || offsets.isEmpty) {
         erasedList.add(drawInfo);
         continue;
       }
-      if(offsets.length == 1) {
-        if(offsets[0] != tapPoint) {
-          erasedList.add(drawInfo);
-        }
-      } else {
-        final firstPoint = offsets[0];
-        if(firstPoint == null) {
-          erasedList.add(drawInfo);
+      final tappedArea = Path()
+        ..addRect(Rect.fromCircle(center: tapPoint, radius: 28));
+      for (final offset in offsets) {
+        if (offset == null) {
           continue;
         }
-        final path = Path()..moveTo(firstPoint.dx, firstPoint.dy);
-        for(var i = 1; i < offsets.length; i++) {
-          if(offsets[i] != null) {
-            path.lineTo(offsets[i]!.dx, offsets[i]!.dy);
-          }
-        }
-        if(!path.contains(tapPoint)) {
-          erasedList.add(drawInfo);
+        if (tappedArea.contains(offset)) {
+          continue outer;
         }
       }
+      erasedList.add(drawInfo);
     }
-    if(_drawInfoList.length != erasedList.length) {
+    if (_drawInfoList.length != erasedList.length) {
       _drawInfoList = erasedList;
       addDrawHistory();
       _undoList = [];

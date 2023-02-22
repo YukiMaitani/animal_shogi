@@ -34,7 +34,9 @@ class DrawPage extends HookConsumerWidget {
         child: CustomPaint(
             painter: AnimalCustomPainter(controller), child: Container()),
         onTapDown: (details) {
-          ref.read(drawingControllerProvider).objectErase(details.localPosition);
+          if(controller.drawMode == DrawMode.objectEraser) {
+            ref.read(drawingControllerProvider).objectErase(details.localPosition);
+          }
         },
         onPanStart: (details) {
           ref
