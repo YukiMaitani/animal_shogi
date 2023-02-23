@@ -14,6 +14,10 @@ class DrawPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('ライオン'),
+      ),
+      backgroundColor: drawPageBodyColor,
       body: _buildBody(),
     );
   }
@@ -32,10 +36,24 @@ class DrawPage extends HookConsumerWidget {
       final controller = ref.watch(drawingControllerProvider);
       return GestureDetector(
         child: CustomPaint(
-            painter: AnimalCustomPainter(controller), child: Container()),
+            painter: AnimalCustomPainter(controller),
+            child: Center(
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Container(
+                  margin: const EdgeInsets.all(40),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black, width: 4),
+                      borderRadius: BorderRadius.circular(20)),
+                ),
+              ),
+            )),
         onTapDown: (details) {
-          if(controller.drawMode == DrawMode.objectEraser) {
-            ref.read(drawingControllerProvider).objectErase(details.localPosition);
+          if (controller.drawMode == DrawMode.objectEraser) {
+            ref
+                .read(drawingControllerProvider)
+                .objectErase(details.localPosition);
           }
         },
         onPanStart: (details) {
@@ -236,9 +254,7 @@ class DrawPage extends HookConsumerWidget {
           onTap: isSelected
               ? null
               : () {
-                  ref
-                      .read(drawingControllerProvider)
-                      .setEraserMode();
+                  ref.read(drawingControllerProvider).setEraserMode();
                 },
           child: Assets.images.draw.eraser.svg(
               height: 40,
