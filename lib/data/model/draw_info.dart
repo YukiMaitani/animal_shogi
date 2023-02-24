@@ -15,7 +15,10 @@ class DrawInfo with _$DrawInfo {
     required DrawType drawType,
     Paint? paint,
     List<Offset?>? offsets,
-    String? text
+    String? text,
+    Offset? leftTopOffset,
+    double? height,
+    double? width,
   }) = _DrawInfo;
 
   //factory DrawInfo.fromJson(Map<String, Object?> json) => _$DrawInfoFromJson(json);

@@ -23,32 +23,49 @@ class DrawPage extends HookConsumerWidget {
   }
 
   Widget _buildBody() {
-    return Column(
-      children: [
-        Expanded(child: _buildCanvas()),
-        _buildPalette(),
-      ],
-    );
+    return HookConsumer(builder: (context, ref, child){
+      final screenWidth = MediaQuery.of(context).size.width;
+      final screenHeight = MediaQuery.of(context).size.height;
+      return SizedBox(
+        height: screenHeight,
+        width: screenWidth,
+        child: Stack(
+          children: [
+            //Spacer(),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Stack(
+                  children: [
+                    _buildCanvas(),
+                  ],
+                ),
+              ),
+            ),
+            //Spacer(),
+            Align(alignment:Alignment.bottomCenter, child: _buildPalette()),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildCanvas() {
     return HookConsumer(builder: (context, ref, child) {
       final controller = ref.watch(drawingControllerProvider);
       return GestureDetector(
-        child: CustomPaint(
-            painter: AnimalCustomPainter(controller),
-            child: Center(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: Container(
-                  margin: const EdgeInsets.all(40),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.black, width: 4),
-                      borderRadius: BorderRadius.circular(20)),
-                ),
-              ),
-            )),
+         child: AspectRatio(
+           aspectRatio: 1,
+           child: Container(
+             decoration: BoxDecoration(
+                 color: Colors.white,
+                 border: Border.all(color: Colors.black, width: 4),
+                 borderRadius: BorderRadius.circular(20)),
+             child: CustomPaint(
+               painter: AnimalCustomPainter(controller),
+           ),
+           ),
+         ),
         onTapDown: (details) {
           if (controller.drawMode == DrawMode.objectEraser) {
             ref
@@ -273,7 +290,10 @@ class DrawPage extends HookConsumerWidget {
       final isSelected = drawingMode == DrawMode.text;
       return GestureDetector(
         onTap: () {
-          ref.read(drawingControllerProvider).setDrawMode(DrawMode.text);
+          final screenSize = context.size!;
+          final drawTextDx = screenSize.width / 2 - drawTextInitialLength;
+          final drawTextDy = screenSize.height / 2 - drawTextInitialLength;
+          ref.read(drawingControllerProvider).addDrawText(Offset(drawTextDx, drawTextDy));
         },
         child: Text(
           'あ',

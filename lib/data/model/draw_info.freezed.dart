@@ -20,6 +20,9 @@ mixin _$DrawInfo {
   Paint? get paint => throw _privateConstructorUsedError;
   List<Offset?>? get offsets => throw _privateConstructorUsedError;
   String? get text => throw _privateConstructorUsedError;
+  Offset? get leftTopOffset => throw _privateConstructorUsedError;
+  double? get height => throw _privateConstructorUsedError;
+  double? get width => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DrawInfoCopyWith<DrawInfo> get copyWith =>
@@ -32,7 +35,13 @@ abstract class $DrawInfoCopyWith<$Res> {
       _$DrawInfoCopyWithImpl<$Res, DrawInfo>;
   @useResult
   $Res call(
-      {DrawType drawType, Paint? paint, List<Offset?>? offsets, String? text});
+      {DrawType drawType,
+      Paint? paint,
+      List<Offset?>? offsets,
+      String? text,
+      Offset? leftTopOffset,
+      double? height,
+      double? width});
 }
 
 /// @nodoc
@@ -52,6 +61,9 @@ class _$DrawInfoCopyWithImpl<$Res, $Val extends DrawInfo>
     Object? paint = freezed,
     Object? offsets = freezed,
     Object? text = freezed,
+    Object? leftTopOffset = freezed,
+    Object? height = freezed,
+    Object? width = freezed,
   }) {
     return _then(_value.copyWith(
       drawType: null == drawType
@@ -70,6 +82,18 @@ class _$DrawInfoCopyWithImpl<$Res, $Val extends DrawInfo>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String?,
+      leftTopOffset: freezed == leftTopOffset
+          ? _value.leftTopOffset
+          : leftTopOffset // ignore: cast_nullable_to_non_nullable
+              as Offset?,
+      height: freezed == height
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as double?,
+      width: freezed == width
+          ? _value.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as double?,
     ) as $Val);
   }
 }
@@ -82,7 +106,13 @@ abstract class _$$_DrawInfoCopyWith<$Res> implements $DrawInfoCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {DrawType drawType, Paint? paint, List<Offset?>? offsets, String? text});
+      {DrawType drawType,
+      Paint? paint,
+      List<Offset?>? offsets,
+      String? text,
+      Offset? leftTopOffset,
+      double? height,
+      double? width});
 }
 
 /// @nodoc
@@ -100,6 +130,9 @@ class __$$_DrawInfoCopyWithImpl<$Res>
     Object? paint = freezed,
     Object? offsets = freezed,
     Object? text = freezed,
+    Object? leftTopOffset = freezed,
+    Object? height = freezed,
+    Object? width = freezed,
   }) {
     return _then(_$_DrawInfo(
       drawType: null == drawType
@@ -118,6 +151,18 @@ class __$$_DrawInfoCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String?,
+      leftTopOffset: freezed == leftTopOffset
+          ? _value.leftTopOffset
+          : leftTopOffset // ignore: cast_nullable_to_non_nullable
+              as Offset?,
+      height: freezed == height
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as double?,
+      width: freezed == width
+          ? _value.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as double?,
     ));
   }
 }
@@ -129,7 +174,10 @@ class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
       {required this.drawType,
       this.paint,
       final List<Offset?>? offsets,
-      this.text})
+      this.text,
+      this.leftTopOffset,
+      this.height,
+      this.width})
       : _offsets = offsets;
 
   @override
@@ -148,10 +196,16 @@ class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
 
   @override
   final String? text;
+  @override
+  final Offset? leftTopOffset;
+  @override
+  final double? height;
+  @override
+  final double? width;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'DrawInfo(drawType: $drawType, paint: $paint, offsets: $offsets, text: $text)';
+    return 'DrawInfo(drawType: $drawType, paint: $paint, offsets: $offsets, text: $text, leftTopOffset: $leftTopOffset, height: $height, width: $width)';
   }
 
   @override
@@ -162,7 +216,10 @@ class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
       ..add(DiagnosticsProperty('drawType', drawType))
       ..add(DiagnosticsProperty('paint', paint))
       ..add(DiagnosticsProperty('offsets', offsets))
-      ..add(DiagnosticsProperty('text', text));
+      ..add(DiagnosticsProperty('text', text))
+      ..add(DiagnosticsProperty('leftTopOffset', leftTopOffset))
+      ..add(DiagnosticsProperty('height', height))
+      ..add(DiagnosticsProperty('width', width));
   }
 
   @override
@@ -174,12 +231,23 @@ class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
                 other.drawType == drawType) &&
             (identical(other.paint, paint) || other.paint == paint) &&
             const DeepCollectionEquality().equals(other._offsets, _offsets) &&
-            (identical(other.text, text) || other.text == text));
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.leftTopOffset, leftTopOffset) ||
+                other.leftTopOffset == leftTopOffset) &&
+            (identical(other.height, height) || other.height == height) &&
+            (identical(other.width, width) || other.width == width));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, drawType, paint,
-      const DeepCollectionEquality().hash(_offsets), text);
+  int get hashCode => Object.hash(
+      runtimeType,
+      drawType,
+      paint,
+      const DeepCollectionEquality().hash(_offsets),
+      text,
+      leftTopOffset,
+      height,
+      width);
 
   @JsonKey(ignore: true)
   @override
@@ -193,7 +261,10 @@ abstract class _DrawInfo implements DrawInfo {
       {required final DrawType drawType,
       final Paint? paint,
       final List<Offset?>? offsets,
-      final String? text}) = _$_DrawInfo;
+      final String? text,
+      final Offset? leftTopOffset,
+      final double? height,
+      final double? width}) = _$_DrawInfo;
 
   @override
   DrawType get drawType;
@@ -203,6 +274,12 @@ abstract class _DrawInfo implements DrawInfo {
   List<Offset?>? get offsets;
   @override
   String? get text;
+  @override
+  Offset? get leftTopOffset;
+  @override
+  double? get height;
+  @override
+  double? get width;
   @override
   @JsonKey(ignore: true)
   _$$_DrawInfoCopyWith<_$_DrawInfo> get copyWith =>

@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:animal_shogi/pages/draw/drawing_controller.dart';
 import 'package:flutter/cupertino.dart';
 
+const double drawTextInitialLength = 50;
+
 class AnimalCustomPainter extends CustomPainter {
   AnimalCustomPainter(this.drawingController);
 

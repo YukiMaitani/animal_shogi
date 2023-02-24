@@ -1,4 +1,5 @@
 import 'package:animal_shogi/data/model/draw_info.dart';
+import 'package:animal_shogi/pages/draw/animal_custom_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -16,6 +17,10 @@ class DrawingController extends ChangeNotifier {
   List<DrawInfo> _drawInfoList = [];
 
   List<DrawInfo> get drawInfoList => _drawInfoList;
+
+  List<DrawInfo> get drawTextList => _drawInfoList
+      .where((drawInfo) => drawInfo.drawType == DrawType.text)
+      .toList();
 
   final List<Offset?> _offsets = [];
 
@@ -45,6 +50,14 @@ class DrawingController extends ChangeNotifier {
     _currentEraserTabIndex = value;
     notifyListeners();
   }
+
+  DrawInfo? _selectedDrawText;
+
+  DrawInfo? get selectedDrawText => _selectedDrawText;
+
+  int? _selectedDrawTextIndex;
+
+  int? get selectedDrawTextIndex => _selectedDrawTextIndex;
 
   Paint? get paint {
     switch (drawMode) {
@@ -212,6 +225,19 @@ class DrawingController extends ChangeNotifier {
       _undoList = [];
       notifyListeners();
     }
+  }
+
+  void addDrawText(Offset leftTopOffset) {
+    final drawText = DrawInfo(
+        drawType: DrawType.text,
+        leftTopOffset: leftTopOffset,
+        width: drawTextInitialLength,
+        height: drawTextInitialLength);
+    _drawInfoList.add(drawText);
+    _selectedDrawText = drawText;
+    _selectedDrawTextIndex = _drawInfoList.length;
+    _drawMode = DrawMode.text;
+    addDrawHistory();
   }
 }
 
