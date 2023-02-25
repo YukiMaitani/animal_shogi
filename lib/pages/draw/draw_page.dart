@@ -23,7 +23,7 @@ class DrawPage extends HookConsumerWidget {
   }
 
   Widget _buildBody() {
-    return HookConsumer(builder: (context, ref, child){
+    return HookConsumer(builder: (context, ref, child) {
       final screenWidth = MediaQuery.of(context).size.width;
       final screenHeight = MediaQuery.of(context).size.height;
       return SizedBox(
@@ -43,7 +43,7 @@ class DrawPage extends HookConsumerWidget {
               ),
             ),
             //Spacer(),
-            Align(alignment:Alignment.bottomCenter, child: _buildPalette()),
+            Align(alignment: Alignment.bottomCenter, child: _buildPalette()),
           ],
         ),
       );
@@ -52,22 +52,25 @@ class DrawPage extends HookConsumerWidget {
 
   Widget _buildCanvas() {
     return HookConsumer(builder: (context, ref, child) {
-      final controller = ref.watch(drawingControllerProvider);
+      final drawPathList = ref.watch(
+          drawingControllerProvider.select((value) => value.drawPathList));
+      final drawMode = ref
+          .watch(drawingControllerProvider.select((value) => value.drawMode));
       return GestureDetector(
-         child: AspectRatio(
-           aspectRatio: 1,
-           child: Container(
-             decoration: BoxDecoration(
-                 color: Colors.white,
-                 border: Border.all(color: Colors.black, width: 4),
-                 borderRadius: BorderRadius.circular(20)),
-             child: CustomPaint(
-               painter: AnimalCustomPainter(controller),
-           ),
-           ),
-         ),
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.black, width: 4),
+                borderRadius: BorderRadius.circular(20)),
+            child: CustomPaint(
+              painter: AnimalCustomPainter(drawPathList),
+            ),
+          ),
+        ),
         onTapDown: (details) {
-          if (controller.drawMode == DrawMode.objectEraser) {
+          if (drawMode == DrawMode.objectEraser) {
             ref
                 .read(drawingControllerProvider)
                 .objectErase(details.localPosition);
@@ -293,7 +296,9 @@ class DrawPage extends HookConsumerWidget {
           final screenSize = context.size!;
           final drawTextDx = screenSize.width / 2 - drawTextInitialLength;
           final drawTextDy = screenSize.height / 2 - drawTextInitialLength;
-          ref.read(drawingControllerProvider).addDrawText(Offset(drawTextDx, drawTextDy));
+          ref
+              .read(drawingControllerProvider)
+              .addDrawText(Offset(drawTextDx, drawTextDy));
         },
         child: Text(
           'あ',

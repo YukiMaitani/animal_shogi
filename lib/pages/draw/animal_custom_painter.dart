@@ -3,18 +3,20 @@ import 'dart:ui';
 import 'package:animal_shogi/pages/draw/drawing_controller.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../data/model/draw_info.dart';
+
 const double drawTextInitialLength = 50;
 
 class AnimalCustomPainter extends CustomPainter {
-  AnimalCustomPainter(this.drawingController);
+  AnimalCustomPainter(this.drawPathList);
 
-  DrawingController drawingController;
+  List<DrawInfo> drawPathList;
 
   @override
   void paint(Canvas canvas, Size size) {
     canvas.saveLayer(Rect.largest, Paint());
-    for (var i = 0; i < drawingController.drawInfoList.length; i++) {
-      final drawInfo = drawingController.drawInfoList[i];
+    for (var i = 0; i < drawPathList.length; i++) {
+      final drawInfo = drawPathList[i];
       final paint = drawInfo.paint;
       final points = drawInfo.offsets;
       if (points == null || points.isEmpty || paint == null) {

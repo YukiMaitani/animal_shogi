@@ -18,6 +18,13 @@ class DrawingController extends ChangeNotifier {
 
   List<DrawInfo> get drawInfoList => _drawInfoList;
 
+  List<DrawInfo> get drawPathList => _drawInfoList
+      .where((drawInfo) =>
+          drawInfo.drawType == DrawType.pen ||
+          drawInfo.drawType ==
+          DrawType.eraser)
+      .toList();
+
   List<DrawInfo> get drawTextList => _drawInfoList
       .where((drawInfo) => drawInfo.drawType == DrawType.text)
       .toList();
