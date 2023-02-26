@@ -21,8 +21,7 @@ class DrawingController extends ChangeNotifier {
   List<DrawInfo> get drawPathList => _drawInfoList
       .where((drawInfo) =>
           drawInfo.drawType == DrawType.pen ||
-          drawInfo.drawType ==
-          DrawType.eraser)
+          drawInfo.drawType == DrawType.eraser)
       .toList();
 
   List<DrawInfo> get drawTextList => _drawInfoList
@@ -234,6 +233,20 @@ class DrawingController extends ChangeNotifier {
     }
   }
 
+  void setDrawText(DrawInfo drawText) {
+    for (var i = 0; i < _drawInfoList.length; i++) {
+      if (_drawInfoList[i].drawType != DrawType.text) {
+        continue;
+      }
+      if (_drawInfoList[i] == drawText) {
+        _selectedDrawText = drawText;
+        _selectedDrawTextIndex = i;
+        notifyListeners();
+        return;
+      }
+    }
+  }
+
   void addDrawText(Offset leftTopOffset) {
     final drawText = DrawInfo(
         drawType: DrawType.text,
@@ -245,6 +258,23 @@ class DrawingController extends ChangeNotifier {
     _selectedDrawTextIndex = _drawInfoList.length;
     _drawMode = DrawMode.text;
     addDrawHistory();
+  }
+
+  void updateDrawText(Offset updateOffset) {
+    if (_selectedDrawText == null || _selectedDrawTextIndex == null) {
+      return;
+    }
+    final updatedDrawText =
+        _selectedDrawText!.copyWith(leftTopOffset: updateOffset);
+    _drawInfoList = List.of(_drawInfoList)
+      ..[_selectedDrawTextIndex!] = updatedDrawText;
+    notifyListeners();
+  }
+
+  void resetSelectedDrawText() {
+    _selectedDrawText = null;
+    _selectedDrawTextIndex = null;
+    notifyListeners();
   }
 }
 

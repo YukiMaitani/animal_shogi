@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:logger/logger.dart';
 
+import '../../data/model/draw_info.dart';
 import '../../gen/assets.gen.dart';
 
 class DrawPage extends HookConsumerWidget {
@@ -26,6 +27,8 @@ class DrawPage extends HookConsumerWidget {
     return HookConsumer(builder: (context, ref, child) {
       final screenWidth = MediaQuery.of(context).size.width;
       final screenHeight = MediaQuery.of(context).size.height;
+      final drawTextList = ref.watch(
+          drawingControllerProvider.select((value) => value.drawTextList));
       return SizedBox(
         height: screenHeight,
         width: screenWidth,
@@ -43,6 +46,7 @@ class DrawPage extends HookConsumerWidget {
               ),
             ),
             //Spacer(),
+            for (final drawText in drawTextList) _buildDrawText(drawText),
             Align(alignment: Alignment.bottomCenter, child: _buildPalette()),
           ],
         ),
@@ -88,6 +92,33 @@ class DrawPage extends HookConsumerWidget {
         },
         onPanEnd: (_) {
           ref.read(drawingControllerProvider).addDrawHistory();
+        },
+      );
+    });
+  }
+
+  Widget _buildDrawText(DrawInfo drawText) {
+    return HookConsumer(builder: (context, ref, child) {
+      return GestureDetector(
+        child: Positioned(
+          left: drawText.leftTopOffset!.dx,
+          top: drawText.leftTopOffset!.dy,
+          width: drawText.width,
+          height: drawText.height,
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.transparent,
+                border: Border.all(color: Colors.blueAccent)),
+            child: TextField(),
+          ),
+        ),
+        onPanStart: (_) {
+          ref.read(drawingControllerProvider).setDrawText(drawText);
+        },
+        onPanUpdate: (details) {
+          ref
+              .read(drawingControllerProvider)
+              .updateDrawText(details.localPosition);
         },
       );
     });
