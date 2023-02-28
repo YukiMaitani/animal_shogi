@@ -1,3 +1,4 @@
+import 'package:animal_shogi/pages/game/board_custom_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -32,12 +33,10 @@ class GamePage extends HookConsumerWidget {
         child: Container(
           width: baseWidth,
           height: baseHeight,
-          decoration: BoxDecoration(
-              color: boardBodyColor,
-              border: Border.all(
-                color: boardFrameBorderColor,
-                width: 4,
-              )),
+          color: boardBodyColor,
+          child: CustomPaint(
+            painter: BoardCustomPainter(),
+          ),
         ),
       );
     });
