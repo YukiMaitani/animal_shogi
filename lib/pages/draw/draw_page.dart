@@ -115,7 +115,7 @@ class DrawPage extends HookConsumerWidget {
           onPanUpdate: (details) {
             ref
                 .read(drawingControllerProvider)
-                .updateDrawText(details.localPosition);
+                .updateDrawText(drawText.leftTopOffset! + details.delta);
           },
         ),
       );
@@ -323,8 +323,8 @@ class DrawPage extends HookConsumerWidget {
       return GestureDetector(
         onTap: () {
           final screenSize = context.size!;
-          final drawTextDx = screenSize.width / 2 - drawTextInitialLength;
-          final drawTextDy = screenSize.height / 2 - drawTextInitialLength;
+          final drawTextDx = screenSize.width / 2;
+          final drawTextDy = screenSize.height / 2;
           ref
               .read(drawingControllerProvider)
               .addDrawText(Offset(drawTextDx, drawTextDy));
