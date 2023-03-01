@@ -99,27 +99,27 @@ class DrawPage extends HookConsumerWidget {
 
   Widget _buildDrawText(DrawInfo drawText) {
     return HookConsumer(builder: (context, ref, child) {
-      return GestureDetector(
-        child: Positioned(
-          left: drawText.leftTopOffset!.dx,
-          top: drawText.leftTopOffset!.dy,
-          width: drawText.width,
-          height: drawText.height,
+      return Positioned(
+        left: drawText.leftTopOffset!.dx,
+        top: drawText.leftTopOffset!.dy,
+        child: GestureDetector(
           child: Container(
+            width: drawText.width,
+            height: drawText.height,
             decoration: BoxDecoration(
                 color: Colors.transparent,
                 border: Border.all(color: Colors.blueAccent)),
             child: TextField(),
           ),
+          onPanStart: (_) {
+            ref.read(drawingControllerProvider).setDrawText(drawText);
+          },
+          onPanUpdate: (details) {
+            ref
+                .read(drawingControllerProvider)
+                .updateDrawText(details.localPosition);
+          },
         ),
-        onPanStart: (_) {
-          ref.read(drawingControllerProvider).setDrawText(drawText);
-        },
-        onPanUpdate: (details) {
-          ref
-              .read(drawingControllerProvider)
-              .updateDrawText(details.localPosition);
-        },
       );
     });
   }
