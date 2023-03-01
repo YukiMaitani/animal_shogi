@@ -38,14 +38,19 @@ class DrawPage extends HookConsumerWidget {
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(20),
-                child: Stack(
-                  children: [
-                    _buildCanvas(),
-                  ],
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.black, width: 4),
+                        borderRadius: BorderRadius.circular(20)),
+                  ),
                 ),
               ),
             ),
             //Spacer(),
+            _buildCanvas(),
             for (final drawText in drawTextList) _buildDrawText(drawText),
             Align(alignment: Alignment.bottomCenter, child: _buildPalette()),
           ],
@@ -61,19 +66,12 @@ class DrawPage extends HookConsumerWidget {
       final drawMode = ref
           .watch(drawingControllerProvider.select((value) => value.drawMode));
       return GestureDetector(
-        child: AspectRatio(
-          aspectRatio: 1,
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.black, width: 4),
-                borderRadius: BorderRadius.circular(20)),
-            child: CustomPaint(
-              painter: AnimalCustomPainter(drawPathList),
-            ),
-          ),
+        child: CustomPaint(
+          painter: AnimalCustomPainter(drawPathList),
+          child: Container(),
         ),
         onTapDown: (details) {
+          FocusScope.of(context).unfocus();
           if (drawMode == DrawMode.objectEraser) {
             ref
                 .read(drawingControllerProvider)
