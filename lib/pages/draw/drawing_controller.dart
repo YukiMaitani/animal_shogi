@@ -268,6 +268,7 @@ class DrawingController extends ChangeNotifier {
     }
     _drawInfoList = List.of(_drawInfoList)
       ..[_selectedDrawTextIndex!] = drawText;
+    _undoList = [];
     notifyListeners();
   }
 

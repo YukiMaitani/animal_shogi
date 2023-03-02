@@ -137,6 +137,9 @@ class DrawPage extends HookConsumerWidget {
                     .read(drawingControllerProvider)
                     .updateDrawText(updatedDrawText);
               },
+              onPanEnd: (_) {
+                ref.read(drawingControllerProvider).addDrawHistory();
+              },
             ),
           ),
 
@@ -162,6 +165,9 @@ class DrawPage extends HookConsumerWidget {
                       .read(drawingControllerProvider)
                       .updateDrawText(updatedDrawText);
                 },
+                onPanEnd: (_) {
+                  ref.read(drawingControllerProvider).addDrawHistory();
+                },
               )),
 
           // 右ボタン
@@ -185,6 +191,9 @@ class DrawPage extends HookConsumerWidget {
                   ref
                       .read(drawingControllerProvider)
                       .updateDrawText(updatedDrawText);
+                },
+                onPanEnd: (_) {
+                  ref.read(drawingControllerProvider).addDrawHistory();
                 },
               ))
         ],
