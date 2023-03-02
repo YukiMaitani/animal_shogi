@@ -130,12 +130,17 @@ class DrawPage extends HookConsumerWidget {
                 ref.read(drawingControllerProvider).setDrawText(drawText);
               },
               onPanUpdate: (details) {
+                final selectedDrawText = ref.read(drawingControllerProvider).selectedDrawText;
+                if(selectedDrawText == null) { return; }
+                final updatedDrawText = selectedDrawText.copyWith(leftTopOffset: drawText.leftTopOffset! + details.delta);
                 ref
                     .read(drawingControllerProvider)
-                    .updateDrawText(drawText.leftTopOffset! + details.delta);
+                    .updateDrawText(updatedDrawText);
               },
             ),
           ),
+
+          // 左ボタン
           Positioned(
               left: left - adjustButtonLength / 2,
               top: top - adjustButtonLength / 2 + height / 2,
@@ -146,7 +151,20 @@ class DrawPage extends HookConsumerWidget {
                   decoration: const BoxDecoration(
                       color: Colors.blueAccent, shape: BoxShape.circle),
                 ),
+                onPanStart: (details) {
+                  ref.read(drawingControllerProvider).setDrawText(drawText);
+                },
+                onPanUpdate: (details) {
+                  final selectedDrawText = ref.read(drawingControllerProvider).selectedDrawText;
+                  if(selectedDrawText == null) { return; }
+                  final updatedDrawText = selectedDrawText.copyWith(leftTopOffset: Offset(left + details.delta.dx, top), width: width - details.delta.dx);
+                  ref
+                      .read(drawingControllerProvider)
+                      .updateDrawText(updatedDrawText);
+                },
               )),
+
+          // 右ボタン
           Positioned(
               left: left + width - adjustButtonLength / 2,
               top: top + height / 2 - adjustButtonLength / 2,
@@ -157,6 +175,17 @@ class DrawPage extends HookConsumerWidget {
                   decoration: const BoxDecoration(
                       color: Colors.blueAccent, shape: BoxShape.circle),
                 ),
+                onPanStart: (details) {
+                  ref.read(drawingControllerProvider).setDrawText(drawText);
+                },
+                onPanUpdate: (details) {
+                  final selectedDrawText = ref.read(drawingControllerProvider).selectedDrawText;
+                  if(selectedDrawText == null) { return; }
+                  final updatedDrawText = selectedDrawText.copyWith(width: width + details.delta.dx);
+                  ref
+                      .read(drawingControllerProvider)
+                      .updateDrawText(updatedDrawText);
+                },
               ))
         ],
       );

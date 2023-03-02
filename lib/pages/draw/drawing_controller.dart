@@ -262,14 +262,12 @@ class DrawingController extends ChangeNotifier {
     addDrawHistory();
   }
 
-  void updateDrawText(Offset updateOffset) {
+  void updateDrawText(DrawInfo drawText) {
     if (_selectedDrawText == null || _selectedDrawTextIndex == null) {
       return;
     }
-    final updatedDrawText =
-        _selectedDrawText!.copyWith(leftTopOffset: updateOffset);
     _drawInfoList = List.of(_drawInfoList)
-      ..[_selectedDrawTextIndex!] = updatedDrawText;
+      ..[_selectedDrawTextIndex!] = drawText;
     notifyListeners();
   }
 
