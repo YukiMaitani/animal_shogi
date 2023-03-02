@@ -130,9 +130,13 @@ class DrawPage extends HookConsumerWidget {
                 ref.read(drawingControllerProvider).setDrawText(drawText);
               },
               onPanUpdate: (details) {
-                final selectedDrawText = ref.read(drawingControllerProvider).selectedDrawText;
-                if(selectedDrawText == null) { return; }
-                final updatedDrawText = selectedDrawText.copyWith(leftTopOffset: drawText.leftTopOffset! + details.delta);
+                final selectedDrawText =
+                    ref.read(drawingControllerProvider).selectedDrawText;
+                if (selectedDrawText == null) {
+                  return;
+                }
+                final updatedDrawText = selectedDrawText.copyWith(
+                    leftTopOffset: drawText.leftTopOffset! + details.delta);
                 ref
                     .read(drawingControllerProvider)
                     .updateDrawText(updatedDrawText);
@@ -158,9 +162,14 @@ class DrawPage extends HookConsumerWidget {
                   ref.read(drawingControllerProvider).setDrawText(drawText);
                 },
                 onPanUpdate: (details) {
-                  final selectedDrawText = ref.read(drawingControllerProvider).selectedDrawText;
-                  if(selectedDrawText == null) { return; }
-                  final updatedDrawText = selectedDrawText.copyWith(leftTopOffset: Offset(left + details.delta.dx, top), width: width - details.delta.dx);
+                  final selectedDrawText =
+                      ref.read(drawingControllerProvider).selectedDrawText;
+                  if (selectedDrawText == null) {
+                    return;
+                  }
+                  final updatedDrawText = selectedDrawText.copyWith(
+                      leftTopOffset: Offset(left + details.delta.dx, top),
+                      width: width - details.delta.dx);
                   ref
                       .read(drawingControllerProvider)
                       .updateDrawText(updatedDrawText);
@@ -185,9 +194,13 @@ class DrawPage extends HookConsumerWidget {
                   ref.read(drawingControllerProvider).setDrawText(drawText);
                 },
                 onPanUpdate: (details) {
-                  final selectedDrawText = ref.read(drawingControllerProvider).selectedDrawText;
-                  if(selectedDrawText == null) { return; }
-                  final updatedDrawText = selectedDrawText.copyWith(width: width + details.delta.dx);
+                  final selectedDrawText =
+                      ref.read(drawingControllerProvider).selectedDrawText;
+                  if (selectedDrawText == null) {
+                    return;
+                  }
+                  final updatedDrawText = selectedDrawText.copyWith(
+                      width: width + details.delta.dx);
                   ref
                       .read(drawingControllerProvider)
                       .updateDrawText(updatedDrawText);
@@ -437,6 +450,10 @@ class DrawPage extends HookConsumerWidget {
 
   Widget _buildBackForward() {
     return HookConsumer(builder: (context, ref, child) {
+      final drawHistory = ref.watch(
+          drawingControllerProvider.select((value) => value.drawHistory));
+      final undoList = ref
+          .watch(drawingControllerProvider.select((value) => value.undoList));
       return Row(
         children: [
           GestureDetector(
@@ -444,8 +461,12 @@ class DrawPage extends HookConsumerWidget {
               ref.read(drawingControllerProvider).undo();
             },
             child: Assets.images.draw.back.svg(
-              height: 24,
-            ),
+                height: 24,
+                colorFilter: ColorFilter.mode(
+                    drawHistory.length > 1
+                        ? paletteBackForwardButtonOnColor
+                        : paletteBackForwardButtonOffColor,
+                    BlendMode.srcIn)),
           ),
           const SizedBox(
             width: 12,
@@ -455,8 +476,12 @@ class DrawPage extends HookConsumerWidget {
               ref.read(drawingControllerProvider).redo();
             },
             child: Assets.images.draw.forward.svg(
-              height: 24,
-            ),
+                height: 24,
+                colorFilter: ColorFilter.mode(
+                    undoList.isNotEmpty
+                        ? paletteBackForwardButtonOnColor
+                        : paletteBackForwardButtonOffColor,
+                    BlendMode.srcIn)),
           ),
         ],
       );

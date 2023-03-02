@@ -259,6 +259,7 @@ class DrawingController extends ChangeNotifier {
     _selectedDrawText = drawText;
     _selectedDrawTextIndex = _drawInfoList.length;
     _drawMode = DrawMode.text;
+    _undoList = [];
     addDrawHistory();
   }
 
