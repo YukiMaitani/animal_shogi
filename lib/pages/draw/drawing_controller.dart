@@ -2,6 +2,7 @@ import 'package:animal_shogi/data/model/draw_info.dart';
 import 'package:animal_shogi/pages/draw/animal_custom_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'dart:math' as math;
 
 import 'draw_page.dart';
 
@@ -252,7 +253,7 @@ class DrawingController extends ChangeNotifier {
   void addDrawText(Offset leftTopOffset) {
     final drawText = DrawInfo(
         drawType: DrawType.text,
-        leftTopOffset: leftTopOffset,
+        leftTopOffset: leftTopOffset + Offset(math.Random().nextDouble(), math.Random().nextDouble()),
         width: drawTextInitialLength,
         height: drawTextInitialLength);
     _drawInfoList.add(drawText);
