@@ -3,6 +3,8 @@ import 'package:animal_shogi/pages/draw/animal_custom_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'draw_page.dart';
+
 final drawingControllerProvider =
     ChangeNotifierProvider.autoDispose((ref) => DrawingController());
 

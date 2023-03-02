@@ -4,8 +4,6 @@ import 'package:flutter/cupertino.dart';
 
 import '../../data/model/draw_info.dart';
 
-const double drawTextInitialLength = 50;
-
 class AnimalCustomPainter extends CustomPainter {
   AnimalCustomPainter(this.drawPathList);
 

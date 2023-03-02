@@ -9,6 +9,8 @@ import 'package:logger/logger.dart';
 import '../../data/model/draw_info.dart';
 import '../../gen/assets.gen.dart';
 
+const double drawTextInitialLength = 80;
+
 class DrawPage extends HookConsumerWidget {
   const DrawPage({super.key});
 
@@ -97,27 +99,66 @@ class DrawPage extends HookConsumerWidget {
 
   Widget _buildDrawText(DrawInfo drawText) {
     return HookConsumer(builder: (context, ref, child) {
-      return Positioned(
-        left: drawText.leftTopOffset!.dx,
-        top: drawText.leftTopOffset!.dy,
-        child: GestureDetector(
-          child: Container(
-            width: drawText.width,
-            height: drawText.height,
-            decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(color: Colors.blueAccent)),
-            child: TextField(),
+      final left = drawText.leftTopOffset!.dx;
+      final top = drawText.leftTopOffset!.dy;
+      final height = drawText.height!;
+      final width = drawText.width!;
+      const double adjustButtonLength = 12;
+      return Stack(
+        children: [
+          Positioned(
+            left: left,
+            top: top,
+            child: GestureDetector(
+              child: Container(
+                width: drawText.width,
+                height: drawText.height,
+                decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    border: Border.all(color: Colors.blueAccent)),
+                child: const Center(
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        hintText: 'もじ'),
+                  ),
+                ),
+              ),
+              onPanStart: (_) {
+                ref.read(drawingControllerProvider).setDrawText(drawText);
+              },
+              onPanUpdate: (details) {
+                ref
+                    .read(drawingControllerProvider)
+                    .updateDrawText(drawText.leftTopOffset! + details.delta);
+              },
+            ),
           ),
-          onPanStart: (_) {
-            ref.read(drawingControllerProvider).setDrawText(drawText);
-          },
-          onPanUpdate: (details) {
-            ref
-                .read(drawingControllerProvider)
-                .updateDrawText(drawText.leftTopOffset! + details.delta);
-          },
-        ),
+          Positioned(
+              left: left - adjustButtonLength / 2,
+              top: top - adjustButtonLength / 2 + height / 2,
+              child: GestureDetector(
+                child: Container(
+                  height: adjustButtonLength,
+                  width: adjustButtonLength,
+                  decoration: const BoxDecoration(
+                      color: Colors.blueAccent, shape: BoxShape.circle),
+                ),
+              )),
+          Positioned(
+              left: left + width - adjustButtonLength / 2,
+              top: top + height / 2 - adjustButtonLength / 2,
+              child: GestureDetector(
+                child: Container(
+                  width: adjustButtonLength,
+                  height: adjustButtonLength,
+                  decoration: const BoxDecoration(
+                      color: Colors.blueAccent, shape: BoxShape.circle),
+                ),
+              ))
+        ],
       );
     });
   }
