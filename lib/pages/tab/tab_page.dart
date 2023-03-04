@@ -10,7 +10,7 @@ class TabPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AutoTabsScaffold(
         routes: const [
-          DrawRoute(), GameRoute(), SettingRoute(),
+          PicturesRoute(), GameRoute(), SettingRoute(),
         ],
       bottomNavigationBuilder: (context, tabsRouter) {
           return BottomNavigationBar(
