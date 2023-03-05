@@ -22,6 +22,7 @@ class DrawPage extends HookConsumerWidget {
       ),
       backgroundColor: drawPageBodyColor,
       body: _buildBody(),
+      bottomNavigationBar: _buildPalette(),
     );
   }
 
@@ -54,7 +55,6 @@ class DrawPage extends HookConsumerWidget {
             //Spacer(),
             _buildCanvas(),
             for (final drawText in drawTextList) _buildDrawText(drawText),
-            Align(alignment: Alignment.bottomCenter, child: _buildPalette()),
           ],
         ),
       );
@@ -216,10 +216,10 @@ class DrawPage extends HookConsumerWidget {
 
   Widget _buildPalette() {
     return Container(
-      height: 72,
+      height: 92,
       color: paletteBodyColor,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(left: 8.0, top: 8, right: 8, bottom: 28),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
