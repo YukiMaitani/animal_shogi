@@ -28,7 +28,7 @@ class PicturesPage extends HookConsumerWidget {
         size: 40,
       ),
       onTap: () {
-        appRouter.push(const DrawRoute());
+        appRouter.push(DrawRoute());
       },
     );
   }

@@ -33,9 +33,11 @@ class AppRouter extends _i6.RootStackRouter {
       );
     },
     DrawRoute.name: (routeData) {
+      final args =
+          routeData.argsAs<DrawRouteArgs>(orElse: () => const DrawRouteArgs());
       return _i6.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i2.DrawPage(),
+        child: _i2.DrawPage(key: args.key),
       );
     },
     PicturesRoute.name: (routeData) {
@@ -103,14 +105,26 @@ class TabRoute extends _i6.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.DrawPage]
-class DrawRoute extends _i6.PageRouteInfo<void> {
-  const DrawRoute()
+class DrawRoute extends _i6.PageRouteInfo<DrawRouteArgs> {
+  DrawRoute({_i7.Key? key})
       : super(
           DrawRoute.name,
           path: '/draw-page',
+          args: DrawRouteArgs(key: key),
         );
 
   static const String name = 'DrawRoute';
+}
+
+class DrawRouteArgs {
+  const DrawRouteArgs({this.key});
+
+  final _i7.Key? key;
+
+  @override
+  String toString() {
+    return 'DrawRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

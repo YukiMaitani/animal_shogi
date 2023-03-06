@@ -1,9 +1,13 @@
+import 'dart:ui';
+
 import 'package:animal_shogi/foundation/colors.dart';
 import 'package:animal_shogi/pages/draw/animal_custom_painter.dart';
 import 'package:animal_shogi/pages/draw/drawing_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:logger/logger.dart';
 
 import '../../data/model/draw_info.dart';
@@ -12,13 +16,16 @@ import '../../gen/assets.gen.dart';
 const double drawTextInitialLength = 80;
 
 class DrawPage extends HookConsumerWidget {
-  const DrawPage({super.key});
+  DrawPage({super.key});
+
+  final globalKey = GlobalKey();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('ライオン'),
+        actions: [_buildSaveButton()],
       ),
       backgroundColor: drawPageBodyColor,
       body: _buildBody(),
@@ -37,27 +44,65 @@ class DrawPage extends HookConsumerWidget {
         width: screenWidth,
         child: Stack(
           children: [
-            //Spacer(),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.black, width: 4),
-                        borderRadius: BorderRadius.circular(20)),
+            RepaintBoundary(
+              key: globalKey,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 4),
+                          borderRadius: BorderRadius.circular(20)),
+                    ),
                   ),
                 ),
               ),
             ),
-            //Spacer(),
             _buildCanvas(),
             for (final drawText in drawTextList) _buildDrawText(drawText),
           ],
         ),
       );
+    });
+  }
+
+  Widget _buildSaveButton() {
+    return HookConsumer(builder: (context, ref, child) {
+      return TextButton(
+          onPressed: () async {
+            final willDialog = await showOkCancelAlertDialog(
+                context: context,
+                message: 'ほぞんするよ？',
+                okLabel: 'いいよ',
+                cancelLabel: 'だめ');
+            if (willDialog == OkCancelResult.ok) {
+              final boundary = globalKey.currentContext?.findRenderObject()
+                  as RenderRepaintBoundary?;
+              if (boundary == null) {
+                Future.delayed(const Duration(seconds: 0), () {
+                  showOkAlertDialog(
+                      context: context, message: 'がぞうのほぞんにしっぱいしました。');
+                });
+                return;
+              }
+              final image = await boundary.toImage();
+              final byteData =
+                  await image.toByteData(format: ImageByteFormat.png);
+              Future.delayed(const Duration(seconds: 0), () {
+                showOkAlertDialog(
+                    context: context, message: 'がぞうのほぞんにせいこうしました。');
+              });
+            }
+          },
+          child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                'ほぞん',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              )));
     });
   }
 
