@@ -15,8 +15,8 @@ import 'package:auto_route/auto_route.dart' as _i6;
 import 'package:flutter/material.dart' as _i7;
 
 import '../draw/draw_page.dart' as _i2;
+import '../drawings/drawings_page.dart' as _i3;
 import '../game/game_page.dart' as _i4;
-import '../pictures/pictures_page.dart' as _i3;
 import '../setting/setting_page.dart' as _i5;
 import '../tab/tab_page.dart' as _i1;
 
@@ -40,10 +40,10 @@ class AppRouter extends _i6.RootStackRouter {
         child: _i2.DrawPage(key: args.key),
       );
     },
-    PicturesRoute.name: (routeData) {
+    DrawingsRoute.name: (routeData) {
       return _i6.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i3.PicturesPage(),
+        child: const _i3.DrawingsPage(),
       );
     },
     GameRoute.name: (routeData) {
@@ -67,8 +67,8 @@ class AppRouter extends _i6.RootStackRouter {
           path: '/',
           children: [
             _i6.RouteConfig(
-              PicturesRoute.name,
-              path: 'pictures-page',
+              DrawingsRoute.name,
+              path: 'drawings-page',
               parent: TabRoute.name,
             ),
             _i6.RouteConfig(
@@ -128,15 +128,15 @@ class DrawRouteArgs {
 }
 
 /// generated route for
-/// [_i3.PicturesPage]
-class PicturesRoute extends _i6.PageRouteInfo<void> {
-  const PicturesRoute()
+/// [_i3.DrawingsPage]
+class DrawingsRoute extends _i6.PageRouteInfo<void> {
+  const DrawingsRoute()
       : super(
-          PicturesRoute.name,
-          path: 'pictures-page',
+          DrawingsRoute.name,
+          path: 'drawings-page',
         );
 
-  static const String name = 'PicturesRoute';
+  static const String name = 'DrawingsRoute';
 }
 
 /// generated route for
