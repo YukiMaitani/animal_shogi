@@ -45,6 +45,7 @@ dependencies:
   flutter_svg: ^2.0.1
   custom_pop_up_menu: ^1.2.4
   collection: ^1.15.0
+  sqflite: ^2.2.5
 
 dev_dependencies:
   flutter_test:
