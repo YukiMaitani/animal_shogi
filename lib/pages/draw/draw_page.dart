@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:animal_shogi/foundation/colors.dart';
+import 'package:animal_shogi/foundation/enum.dart';
 import 'package:animal_shogi/pages/draw/animal_custom_painter.dart';
 import 'package:animal_shogi/pages/draw/drawing_controller.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:logger/logger.dart';
 
 import '../../data/model/draw_info.dart';
 import '../../gen/assets.gen.dart';
+import '../setting/setting_view_model.dart';
 
 const double drawTextInitialLength = 80;
 
@@ -71,20 +73,25 @@ class DrawPage extends HookConsumerWidget {
 
   Widget _buildSaveButton() {
     return HookConsumer(builder: (context, ref, child) {
+      final letterType =
+          ref.watch(settingProvider.select((value) => value.letterType));
       return TextButton(
           onPressed: () async {
             final willDialog = await showOkCancelAlertDialog(
                 context: context,
-                message: 'ほぞんするよ？',
-                okLabel: 'いいよ',
-                cancelLabel: 'だめ');
+                message: letterType == LetterType.kanji ? '保存しますか？' : 'ほぞんするよ？',
+                okLabel: letterType == LetterType.kanji ? '保存' : 'いいよ',
+                cancelLabel: letterType == LetterType.kanji ? 'キャンセル' : 'だめ');
             if (willDialog == OkCancelResult.ok) {
               final boundary = globalKey.currentContext?.findRenderObject()
                   as RenderRepaintBoundary?;
               if (boundary == null) {
                 Future.delayed(const Duration(seconds: 0), () {
                   showOkAlertDialog(
-                      context: context, message: 'がぞうのほぞんにしっぱいしました。');
+                      context: context,
+                      message: letterType == LetterType.kanji
+                          ? '画像の保存に失敗しました'
+                          : 'がぞうのほぞんにしっぱいしました。');
                 });
                 return;
               }
@@ -93,15 +100,18 @@ class DrawPage extends HookConsumerWidget {
                   await image.toByteData(format: ImageByteFormat.png);
               Future.delayed(const Duration(seconds: 0), () {
                 showOkAlertDialog(
-                    context: context, message: 'がぞうのほぞんにせいこうしました。');
+                    context: context,
+                    message: letterType == LetterType.kanji
+                        ? '画像の保存に成功しました'
+                        : 'がぞうのほぞんにせいこうしました。');
               });
             }
           },
-          child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                'ほぞん',
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                letterType == LetterType.kanji ? '保存' : 'ほぞん',
+                style: const TextStyle(color: Colors.white, fontSize: 16),
               )));
     });
   }
@@ -144,6 +154,8 @@ class DrawPage extends HookConsumerWidget {
 
   Widget _buildDrawText(DrawInfo drawText) {
     return HookConsumer(builder: (context, ref, child) {
+      final letterType =
+      ref.watch(settingProvider.select((value) => value.letterType));
       final left = drawText.leftTopOffset!.dx;
       final top = drawText.leftTopOffset!.dy;
       final height = drawText.height!;
@@ -161,13 +173,13 @@ class DrawPage extends HookConsumerWidget {
                 decoration: BoxDecoration(
                     color: Colors.transparent,
                     border: Border.all(color: Colors.blueAccent)),
-                child: const Center(
+                child: Center(
                   child: TextField(
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                         focusedBorder: InputBorder.none,
                         enabledBorder: InputBorder.none,
-                        hintText: 'もじ'),
+                        hintText: letterType == LetterType.kanji ? '文字' : 'もじ'),
                   ),
                 ),
               ),
@@ -337,6 +349,8 @@ class DrawPage extends HookConsumerWidget {
           .watch(drawingControllerProvider.select((value) => value.drawMode));
       final isSelected = drawingMode == DrawMode.pixelEraser ||
           drawingMode == DrawMode.objectEraser;
+      final letterType =
+          ref.watch(settingProvider.select((value) => value.letterType));
       return CustomPopupMenu(
         barrierColor: Colors.transparent,
         arrowSize: 20,
@@ -362,17 +376,21 @@ class DrawPage extends HookConsumerWidget {
                       height: 48,
                       child: TabBar(
                         indicatorColor: paletteButtonOnColor,
-                        tabs: const [
+                        tabs: [
                           Tab(
                             child: Text(
-                              'ピクセル消しゴム',
-                              style: TextStyle(fontSize: 12),
+                              letterType == LetterType.kanji
+                                  ? 'ピクセル消しゴム'
+                                  : 'ピクセルけしゴム',
+                              style: const TextStyle(fontSize: 12),
                             ),
                           ),
                           Tab(
                             child: Text(
-                              'オブジェクト消しゴム',
-                              style: TextStyle(fontSize: 12),
+                              letterType == LetterType.kanji
+                                  ? 'オブジェクト消しゴム'
+                                  : 'オブジェクトけしゴム',
+                              style: const TextStyle(fontSize: 12),
                             ),
                           )
                         ],

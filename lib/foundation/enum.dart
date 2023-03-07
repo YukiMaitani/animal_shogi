@@ -1,0 +1,4 @@
+enum LetterType {
+  hiragana,
+  kanji
+}
