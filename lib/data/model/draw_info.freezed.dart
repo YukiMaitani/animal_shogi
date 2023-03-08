@@ -14,16 +14,25 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+DrawInfo _$DrawInfoFromJson(Map<String, dynamic> json) {
+  return _DrawInfo.fromJson(json);
+}
+
 /// @nodoc
 mixin _$DrawInfo {
+  @JsonKey(name: 'draw_type')
   DrawType get drawType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'paint')
   Paint? get paint => throw _privateConstructorUsedError;
+  @JsonKey(name: 'offsets')
   List<Offset?>? get offsets => throw _privateConstructorUsedError;
   String? get text => throw _privateConstructorUsedError;
+  @JsonKey(name: 'left_top_offset')
   Offset? get leftTopOffset => throw _privateConstructorUsedError;
   double? get height => throw _privateConstructorUsedError;
   double? get width => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $DrawInfoCopyWith<DrawInfo> get copyWith =>
       throw _privateConstructorUsedError;
@@ -35,11 +44,11 @@ abstract class $DrawInfoCopyWith<$Res> {
       _$DrawInfoCopyWithImpl<$Res, DrawInfo>;
   @useResult
   $Res call(
-      {DrawType drawType,
-      Paint? paint,
-      List<Offset?>? offsets,
+      {@JsonKey(name: 'draw_type') DrawType drawType,
+      @JsonKey(name: 'paint') Paint? paint,
+      @JsonKey(name: 'offsets') List<Offset?>? offsets,
       String? text,
-      Offset? leftTopOffset,
+      @JsonKey(name: 'left_top_offset') Offset? leftTopOffset,
       double? height,
       double? width});
 }
@@ -106,11 +115,11 @@ abstract class _$$_DrawInfoCopyWith<$Res> implements $DrawInfoCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {DrawType drawType,
-      Paint? paint,
-      List<Offset?>? offsets,
+      {@JsonKey(name: 'draw_type') DrawType drawType,
+      @JsonKey(name: 'paint') Paint? paint,
+      @JsonKey(name: 'offsets') List<Offset?>? offsets,
       String? text,
-      Offset? leftTopOffset,
+      @JsonKey(name: 'left_top_offset') Offset? leftTopOffset,
       double? height,
       double? width});
 }
@@ -168,24 +177,30 @@ class __$$_DrawInfoCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
   const _$_DrawInfo(
-      {required this.drawType,
-      this.paint,
-      final List<Offset?>? offsets,
+      {@JsonKey(name: 'draw_type') required this.drawType,
+      @JsonKey(name: 'paint') this.paint,
+      @JsonKey(name: 'offsets') final List<Offset?>? offsets,
       this.text,
-      this.leftTopOffset,
+      @JsonKey(name: 'left_top_offset') this.leftTopOffset,
       this.height,
       this.width})
       : _offsets = offsets;
 
+  factory _$_DrawInfo.fromJson(Map<String, dynamic> json) =>
+      _$$_DrawInfoFromJson(json);
+
   @override
+  @JsonKey(name: 'draw_type')
   final DrawType drawType;
   @override
+  @JsonKey(name: 'paint')
   final Paint? paint;
   final List<Offset?>? _offsets;
   @override
+  @JsonKey(name: 'offsets')
   List<Offset?>? get offsets {
     final value = _offsets;
     if (value == null) return null;
@@ -197,6 +212,7 @@ class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
   @override
   final String? text;
   @override
+  @JsonKey(name: 'left_top_offset')
   final Offset? leftTopOffset;
   @override
   final double? height;
@@ -238,6 +254,7 @@ class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
             (identical(other.width, width) || other.width == width));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -254,27 +271,40 @@ class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
   @pragma('vm:prefer-inline')
   _$$_DrawInfoCopyWith<_$_DrawInfo> get copyWith =>
       __$$_DrawInfoCopyWithImpl<_$_DrawInfo>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_DrawInfoToJson(
+      this,
+    );
+  }
 }
 
 abstract class _DrawInfo implements DrawInfo {
   const factory _DrawInfo(
-      {required final DrawType drawType,
-      final Paint? paint,
-      final List<Offset?>? offsets,
+      {@JsonKey(name: 'draw_type') required final DrawType drawType,
+      @JsonKey(name: 'paint') final Paint? paint,
+      @JsonKey(name: 'offsets') final List<Offset?>? offsets,
       final String? text,
-      final Offset? leftTopOffset,
+      @JsonKey(name: 'left_top_offset') final Offset? leftTopOffset,
       final double? height,
       final double? width}) = _$_DrawInfo;
 
+  factory _DrawInfo.fromJson(Map<String, dynamic> json) = _$_DrawInfo.fromJson;
+
   @override
+  @JsonKey(name: 'draw_type')
   DrawType get drawType;
   @override
+  @JsonKey(name: 'paint')
   Paint? get paint;
   @override
+  @JsonKey(name: 'offsets')
   List<Offset?>? get offsets;
   @override
   String? get text;
   @override
+  @JsonKey(name: 'left_top_offset')
   Offset? get leftTopOffset;
   @override
   double? get height;
