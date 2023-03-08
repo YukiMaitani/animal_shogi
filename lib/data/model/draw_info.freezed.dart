@@ -22,12 +22,12 @@ DrawInfo _$DrawInfoFromJson(Map<String, dynamic> json) {
 mixin _$DrawInfo {
   @JsonKey(name: 'draw_type')
   DrawType get drawType => throw _privateConstructorUsedError;
-  @JsonKey(name: 'paint')
+  @JsonKey(includeFromJson: false, includeToJson: false)
   Paint? get paint => throw _privateConstructorUsedError;
-  @JsonKey(name: 'offsets')
+  @JsonKey(includeFromJson: false, includeToJson: false)
   List<Offset?>? get offsets => throw _privateConstructorUsedError;
   String? get text => throw _privateConstructorUsedError;
-  @JsonKey(name: 'left_top_offset')
+  @JsonKey(includeFromJson: false, includeToJson: false)
   Offset? get leftTopOffset => throw _privateConstructorUsedError;
   double? get height => throw _privateConstructorUsedError;
   double? get width => throw _privateConstructorUsedError;
@@ -44,11 +44,15 @@ abstract class $DrawInfoCopyWith<$Res> {
       _$DrawInfoCopyWithImpl<$Res, DrawInfo>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'draw_type') DrawType drawType,
-      @JsonKey(name: 'paint') Paint? paint,
-      @JsonKey(name: 'offsets') List<Offset?>? offsets,
+      {@JsonKey(name: 'draw_type')
+          DrawType drawType,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+          Paint? paint,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+          List<Offset?>? offsets,
       String? text,
-      @JsonKey(name: 'left_top_offset') Offset? leftTopOffset,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+          Offset? leftTopOffset,
       double? height,
       double? width});
 }
@@ -115,11 +119,15 @@ abstract class _$$_DrawInfoCopyWith<$Res> implements $DrawInfoCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'draw_type') DrawType drawType,
-      @JsonKey(name: 'paint') Paint? paint,
-      @JsonKey(name: 'offsets') List<Offset?>? offsets,
+      {@JsonKey(name: 'draw_type')
+          DrawType drawType,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+          Paint? paint,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+          List<Offset?>? offsets,
       String? text,
-      @JsonKey(name: 'left_top_offset') Offset? leftTopOffset,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+          Offset? leftTopOffset,
       double? height,
       double? width});
 }
@@ -180,11 +188,15 @@ class __$$_DrawInfoCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
   const _$_DrawInfo(
-      {@JsonKey(name: 'draw_type') required this.drawType,
-      @JsonKey(name: 'paint') this.paint,
-      @JsonKey(name: 'offsets') final List<Offset?>? offsets,
+      {@JsonKey(name: 'draw_type')
+          required this.drawType,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+          this.paint,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+          final List<Offset?>? offsets,
       this.text,
-      @JsonKey(name: 'left_top_offset') this.leftTopOffset,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+          this.leftTopOffset,
       this.height,
       this.width})
       : _offsets = offsets;
@@ -196,11 +208,11 @@ class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
   @JsonKey(name: 'draw_type')
   final DrawType drawType;
   @override
-  @JsonKey(name: 'paint')
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final Paint? paint;
   final List<Offset?>? _offsets;
   @override
-  @JsonKey(name: 'offsets')
+  @JsonKey(includeFromJson: false, includeToJson: false)
   List<Offset?>? get offsets {
     final value = _offsets;
     if (value == null) return null;
@@ -212,7 +224,7 @@ class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
   @override
   final String? text;
   @override
-  @JsonKey(name: 'left_top_offset')
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final Offset? leftTopOffset;
   @override
   final double? height;
@@ -282,11 +294,15 @@ class _$_DrawInfo with DiagnosticableTreeMixin implements _DrawInfo {
 
 abstract class _DrawInfo implements DrawInfo {
   const factory _DrawInfo(
-      {@JsonKey(name: 'draw_type') required final DrawType drawType,
-      @JsonKey(name: 'paint') final Paint? paint,
-      @JsonKey(name: 'offsets') final List<Offset?>? offsets,
+      {@JsonKey(name: 'draw_type')
+          required final DrawType drawType,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+          final Paint? paint,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+          final List<Offset?>? offsets,
       final String? text,
-      @JsonKey(name: 'left_top_offset') final Offset? leftTopOffset,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+          final Offset? leftTopOffset,
       final double? height,
       final double? width}) = _$_DrawInfo;
 
@@ -296,15 +312,15 @@ abstract class _DrawInfo implements DrawInfo {
   @JsonKey(name: 'draw_type')
   DrawType get drawType;
   @override
-  @JsonKey(name: 'paint')
+  @JsonKey(includeFromJson: false, includeToJson: false)
   Paint? get paint;
   @override
-  @JsonKey(name: 'offsets')
+  @JsonKey(includeFromJson: false, includeToJson: false)
   List<Offset?>? get offsets;
   @override
   String? get text;
   @override
-  @JsonKey(name: 'left_top_offset')
+  @JsonKey(includeFromJson: false, includeToJson: false)
   Offset? get leftTopOffset;
   @override
   double? get height;
