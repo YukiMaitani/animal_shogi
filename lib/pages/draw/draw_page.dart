@@ -161,6 +161,12 @@ class DrawPage extends HookConsumerWidget {
       final height = drawText.height!;
       final width = drawText.width!;
       const double adjustButtonLength = 12;
+      final textEditingController = TextEditingController();
+      if(drawText.text == null && drawText.text == '') {
+        textEditingController.clear();
+      } else {
+        textEditingController.text = drawText.text!;
+      }
       return Stack(
         children: [
           Positioned(
@@ -176,6 +182,18 @@ class DrawPage extends HookConsumerWidget {
                 child: Center(
                   child: TextField(
                     textAlign: TextAlign.center,
+                    controller: textEditingController,
+                    onTap: () {
+                      ref.read(drawingControllerProvider).setDrawText(drawText);
+                    },
+                    onChanged: (text) {
+                      ref
+                          .read(drawingControllerProvider)
+                          .updateDrawText(drawText.copyWith(text: text));
+                    },
+                    onSubmitted: (_) {
+                      ref.read(drawingControllerProvider).addDrawHistory();
+                    },
                     decoration: InputDecoration(
                         focusedBorder: InputBorder.none,
                         enabledBorder: InputBorder.none,
