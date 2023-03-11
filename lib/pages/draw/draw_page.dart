@@ -162,7 +162,7 @@ class DrawPage extends HookConsumerWidget {
       final width = drawText.width!;
       const double adjustButtonLength = 12;
       final textEditingController = TextEditingController();
-      if(drawText.text == null && drawText.text == '') {
+      if(drawText.text == null || drawText.text == '') {
         textEditingController.clear();
       } else {
         textEditingController.text = drawText.text!;
